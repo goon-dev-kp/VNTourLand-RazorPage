@@ -1,0 +1,398 @@
+﻿@page
+@model VNTourLandProject.Pages.NewsAndBlog.IndexModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Blog";
+}
+
+
+
+
+@Html.AntiForgeryToken()
+
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="" class="navbar-brand p-0">
+            <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>VNTourLand</h1>
+            <!-- <img src="img/logo.png" alt="Logo"> -->
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a asp-page="/Home/Index" class="nav-item nav-link ">Home</a>
+                <a asp-page="/AboutUs/Index" class="nav-item nav-link ">About</a>
+                <a asp-page="/TourAndService/Index" class="nav-item nav-link ">Tours</a>
+                <a asp-page="/SpecialService/Index" class="nav-item nav-link">Special</a>
+                <a asp-page="/RetirementAndCoffee/Index" class="nav-item nav-link">Project</a>
+                <a asp-page="/NewsAndBlog/Index" class="nav-item nav-link active">Travel Information Center</a>
+                <a asp-page="/ClientsPartners/Index" class="nav-item nav-link">Partners</a>
+                <a asp-page="/Contact/Index" class="nav-item nav-link">Contact</a>
+
+               
+
+            </div>
+            @if (!Model.IsAuth)
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">More</a>
+                    <div class="dropdown-menu m-0">
+                        <a asp-page="/Auth/Login" class="dropdown-item">Login</a>
+                        <a asp-page="/Auth/Register" class="dropdown-item">Register</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">
+                        @Model.UserName
+                    </a>
+                    <div class="dropdown-menu m-0">
+                        <a asp-page="/User/Profile" class="dropdown-item">Profile</a>
+
+                        <a asp-page="/Manager/MyBooking" class="dropdown-item">MyBooking</a>
+                        
+                        <a asp-page="/Auth/Logout" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </nav>
+</div>
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            Our Blog</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item active text-white">Blog</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+<!-- Blog Start -->
+<div class="container-fluid blog py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Our Blog</h5>
+            <h1 class="mb-4">Popular Travel Blogs</h1>
+            <p class="mb-0">
+                Discover travel tips, destination ideas, and real experiences from travelers around the world.
+            </p>
+        </div>
+
+        <!-- 2 COLUMN LAYOUT -->
+        <div class="row">
+            <!-- LEFT: BLOG LIST -->
+            <div class="col-lg-8">
+                <div class="row g-4">
+                    @foreach (var post in Model.AllBlogs)
+                    {
+                        <div class="col-md-6">
+                            <div class="blog-item border rounded shadow-sm overflow-hidden">
+                                <div class="blog-img position-relative" style="height: 220px;">
+                                    <img src="@post.ImageUrl" alt="Image"
+                                         class="w-100 h-100" style="object-fit: cover;" />
+                                    <div class="blog-icon position-absolute top-50 start-50 translate-middle">
+                                        <a asp-page="/NewsAndBlog/BlogDetail" asp-route-BlogId="@post.BlogId" class="text-white">
+                                            <i class="fas fa-link fa-2x"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="blog-info d-flex align-items-center border-top border-bottom">
+                                    <small class="flex-fill text-center border-end py-2">
+                                        <i class="fa fa-calendar-alt text-primary me-2"></i>
+                                        @post.CreatedDate.ToString("dd MMM yyyy")
+                                    </small>
+                                    <small class="flex-fill text-center py-2">
+                                        <i class="fa fa-comments text-primary me-2"></i>
+                                        @post.CountComment
+                                    </small>
+                                </div>
+                                <div class="blog-content p-3">
+                                    <p class="mb-1 text-muted small">Posted by Admin</p>
+                                    <a asp-page="/NewsAndBlog/BlogDetail" asp-route-BlogId="@post.BlogId" class="h5 d-block">@post.Title</a>
+                                    <p class="my-2">@post.Summary</p>
+                                    <a asp-page="/NewsAndBlog/BlogDetail" asp-route-BlogId="@post.BlogId" class="btn btn-primary btn-sm rounded-pill px-3">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- RIGHT: SIDEBAR -->
+            <div class="col-lg-4">
+                <h5 class="mb-3 fw-bold">Latest Posts</h5>
+                @foreach (var item in Model.Top3LatestPosts)
+                {
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="@item.ImageUrl" class="rounded shadow-sm me-3"
+                             style="width: 80px; height: 80px; object-fit: cover;" />
+                        <div>
+                            <a asp-page="/NewsAndBlog/BlogDetail" asp-route-BlogId="@item.BlogId"
+                               class="text-dark fw-semibold d-block mb-1">
+                                @item.Title
+                            </a>
+                            <small class="text-muted">
+                                <i class="fa fa-calendar-alt me-1"></i>
+                                @item.CreatedDate.ToString("dd MMM yyyy")
+                            </small>
+                        </div>
+                    </div>
+                }
+
+                <h5 class="mt-4 mb-3 fw-bold">Categories</h5>
+                <ul class="list-group list-group-flush">
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <li class="list-group-item px-0">
+                            <a href="#" class="text-dark">
+                                <i class="fa fa-angle-right me-2 text-primary"></i>
+                                @cat.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Blog End -->
+<!-- Blog Map Start -->
+<div class="container my-5">
+    <div class="card shadow-sm rounded-4 p-4 bg-white">
+        <h4 class="fw-bold text-primary mb-3">
+            <i class="fa fa-map-marker-alt me-2"></i> Search for Tourist Attractions
+        </h4>
+        <div class="card-body p-0">
+            <div id="blogMap" style="height: 500px; width: 100%; border-radius: 0 0 12px 12px; overflow: hidden;"></div>
+        </div>
+
+    </div>
+</div>
+<!-- Blog Map End -->
+@* <!-- Floating Chat Icon Button --> *@
+@* <div class="position-fixed bottom-0 end-0 mb-3 me-3"> *@
+@*     <button id="chatToggleBtn" *@
+@*             class="btn btn-primary rounded-circle shadow position-relative" *@
+@*             style="width: 60px; height: 60px;" *@
+@*             onclick="toggleChatPanel()"> *@
+@*         <i class="fa fa-comments fs-4"></i> *@
+@*     </button> *@
+@* </div> *@
+
+@* <!-- Floating Chat Panel --> *@
+@* <div id="chatBar" class="position-fixed bottom-0 end-0 me-3 mb-3 d-none" style="z-index: 1060;"> *@
+@*     <div class="card shadow-lg rounded-4 overflow-hidden" style="width: 480px; height: 520px;"> *@
+@*         <div class="row g-0 h-100"> *@
+@*             <!-- Customer list --> *@
+@*             <div class="col-5 border-end bg-white overflow-auto"> *@
+@*                 <div class="d-flex justify-content-between align-items-center p-3 border-bottom bg-light fw-semibold"> *@
+@*                     <span id="floatingChatTitle" class="text-truncate">Select a user to start chatting</span> *@
+@*                     <button class="btn btn-sm btn-outline-secondary" onclick="hideChatPanel()"> *@
+@*                         <i class="fa fa-times"></i> *@
+@*                     </button> *@
+@*                 </div> *@
+@*                 <!-- Customer list --> *@
+@*                 <div id="chatCustomerList"> *@
+@*                     @if (Model.ChatCustomers != null && Model.ChatCustomers.Any()) *@
+@*                     { *@
+@*                         foreach (var customer in Model.ChatCustomers) *@
+@*                         { *@
+@*                             <div onclick="openFloatingChat('@customer.UserName', '@customer.UserId')" class="chat-user-item list-group-item list-group-item-action border-0 text-start py-3 px-3"> *@
+@*                                 <div class="d-flex align-items-center"> *@
+@*                                     <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2" style="width: 36px; height: 36px; font-weight: bold;"> *@
+@*                                         @customer.UserName.Substring(0, 1).ToUpper() *@
+@*                                     </div> *@
+@*                                     <span>@customer.UserName</span> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                         } *@
+@*                     } *@
+@*                     else *@
+@*                     { *@
+@*                         <div class="text-center text-muted p-3">No users to chat with yet</div> *@
+@*                     } *@
+@*                 </div> *@
+@*             </div> *@
+
+@*             <!-- Chat box --> *@
+@*             <div class="col-7 d-flex flex-column bg-light position-relative"> *@
+@*                 <!-- Messages --> *@
+@*                 <div id="floatingChatContent" class="flex-fill overflow-auto p-3" style="font-size: 14px; max-height: 440px;"></div> *@
+
+@*                 <!-- Chat input area --> *@
+@*                 <!-- Chat input area --> *@
+@*                 <div id="floatingChatInputArea" class="border-top p-3 bg-white d-none" style="flex-shrink: 0;"> *@
+@*                     <form id="chatForm" enctype="multipart/form-data" onsubmit="return sendFloatingMessageWithImage(event)" class="d-flex align-items-center gap-2"> *@
+@*                         @Html.AntiForgeryToken() *@
+
+@*                         <!-- Textarea with padding-right for icons --> *@
+@*                         <textarea id="floatingMessageInput" *@
+@*                                   class="form-control flex-grow-1" *@
+@*                                   placeholder="Type..." *@
+@*                                   rows="1" *@
+@*                                   style=" *@
+@*                     resize: none; *@
+@*                     min-height: 48px; *@
+@*                     max-height: 120px; *@
+@*                     padding: 10px 90px 10px 15px; *@
+@*                     border-radius: 25px; *@
+@*                     box-shadow: 0 0 5px rgb(0 0 0 / 0.1); *@
+@*                     border: 1px solid #ccc; *@
+@*                     font-size: 15px; *@
+@*                     overflow-y: auto; *@
+@*                     outline: none; *@
+@*                   "></textarea> *@
+
+@*                         <!-- Icons container --> *@
+@*                         <div style="position: relative; width: 85px; height: 48px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-left: -85px;"> *@
+@*                             <!-- File upload --> *@
+@*                             <label for="floatingImageInput" title="Attach Image" style="cursor: pointer; color: #555;"> *@
+@*                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16"> *@
+@*                                     <path d="M8.5 1a3.5 3.5 0 0 0-3.5 3.5v7a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 0-1 0v5.5a1.5 1.5 0 0 1-3 0v-7A2.5 2.5 0 0 1 8.5 2h1a.5.5 0 0 0 0-1h-1z" /> *@
+@*                                 </svg> *@
+@*                             </label> *@
+@*                             <input type="file" id="floatingImageInput" accept="image/*" style="display:none" /> *@
+@*                             <!-- Send button --> *@
+@*                             <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 50%; padding: 0; cursor: pointer;" title="Send Message"> *@
+@*                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16"> *@
+@*                                     <path d="M15.964 0.686a.5.5 0 0 0-.65-.65L.767 6.767a.5.5 0 0 0-.106.79l6.646 6.646a.5.5 0 0 0 .79-.106l6.853-14.31z" /> *@
+@*                                 </svg> *@
+@*                             </button> *@
+@*                         </div> *@
+@*                     </form> *@
+@*                     <div id="selectedFileName" style="font-size: 12px; color: #555; margin-top: 4px; max-width: 480px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: none;"></div> *@
+@*                 </div> *@
+
+
+
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+@* @section Scripts { *@
+@*     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" /> *@
+@*     <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" rel="stylesheet" /> *@
+
+@*     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script> *@
+@*     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script> *@
+
+@*     <script> *@
+@*         mapboxgl.accessToken = '@Model.MapboxToken'; *@
+
+@*         const map = new mapboxgl.Map({ *@
+@*             container: 'blogMap', *@
+@*             style: 'mapbox://styles/mapbox/streets-v11', *@
+@*             center: [108.2062, 16.0471], *@
+@*             zoom: 6 *@
+@*         }); *@
+
+@*         const geocoder = new MapboxGeocoder({ *@
+@*             accessToken: mapboxgl.accessToken, *@
+@*             mapboxgl: mapboxgl, *@
+@*             placeholder: "Enter a location to search...", *@
+@*             zoom: 10, *@
+@*             marker: false *@
+@*         }); *@
+
+@*         // Hiển thị khung tìm kiếm trong bản đồ *@
+@*         document.getElementById('blogMap').appendChild(geocoder.onAdd(map)); *@
+
+@*         geocoder.on('result', async function (e) { *@
+@*             const coords = e.result.center; *@
+@*             map.flyTo({ center: coords, zoom: 10 }); *@
+
+@*             try { *@
+@*                 // Retrieve the anti-forgery token *@
+@*         const token = document.querySelector('input[name="__RequestVerificationToken"]').value; *@
+@*                 const location = *@
+@*                 { *@
+@*                     latitude: coords[1], *@
+@*                         longitude: coords[0] *@
+@*                 }; *@
+@*                     const response = await fetch('/NewsAndBlog?handler=NearbyTours', { *@
+@*                     method: 'POST', *@
+@*                     headers: { *@
+@*                         'Content-Type': 'application/json', *@
+@*                         'RequestVerificationToken': token  // Include the token in the headers *@
+@*                     }, *@
+@*                     body: JSON.stringify(location) *@
+@*                 }); *@
+
+
+@*                 if (!response.ok) { *@
+@*                     const err = await response.text(); *@
+@*                     console.error("API error:", err); *@
+@*                     return; *@
+@*                 } *@
+
+@*                 const tours = await response.json(); *@
+
+@*                 tours.forEach(tour => { *@
+@*                     new mapboxgl.Marker({ color: "#ff5733" }) *@
+@*                         .setLngLat([tour.longitude, tour.latitude]) *@
+@*                         .setPopup( *@
+@*                                                     new mapboxgl.Popup().setHTML(` *@
+@*           <div style=" *@
+@*             width: 250px; *@
+@*             border-radius: 12px; *@
+@*             overflow: hidden; *@
+@*             box-shadow: 0 4px 12px rgba(0,0,0,0.1); *@
+@*             font-family: 'Segoe UI', sans-serif; *@
+@*             background: #fff; *@
+@*           "> *@
+@*             <img src="${tour.imageURL}" alt="${tour.tourName}" *@
+@*                  style="width: 100%; height: 140px; object-fit: cover;" /> *@
+
+@*             <div style="padding: 12px 16px;"> *@
+@*               <h6 style="margin: 0 0 8px; font-size: 16px; color: #333; font-weight: 600;"> *@
+@*                 ${tour.tourName} *@
+@*               </h6> *@
+
+@*               <a href="/TourAndService/TourDetail?tourId=${tour.tourId}" *@
+@*                  style=" *@
+@*                    display: inline-block; *@
+@*                    padding: 8px 14px; *@
+@*                    background: linear-gradient(to right, #13357B, #1E50A2); *@
+@*                    color: #fff; *@
+@*                    border-radius: 6px; *@
+@*                    text-decoration: none; *@
+@*                    font-size: 14px; *@
+@*                    font-weight: 500; *@
+@*                    transition: background 0.3s ease; *@
+@*                 " *@
+@*                 onmouseover="this.style.background='#0d3a8d';" *@
+@*                 onmouseout="this.style.background='linear-gradient(to right, #13357B, #1E50A2)';" *@
+@*               > *@
+@*                 View Detail *@
+@*               </a> *@
+@*             </div> *@
+@*           </div> *@
+@*         `) *@
+@*                         ) *@
+@*                         .addTo(map); *@
+@*                 }); *@
+
+@*             } catch (error) { *@
+@*                 console.error("Fetch failed:", error); *@
+@*             } *@
+@*         }); *@
+@*     </script> *@
+@* } *@
+
+
+
+
+
+
+
+    
+

@@ -1,0 +1,157 @@
+﻿@page
+@model VNTourLandProject.Pages.Auth.RegisterModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Register";
+}
+
+<style>
+    .iti {
+        width: 100%;
+    }
+
+        .iti input {
+            height: calc(1.5em + .75rem + 2px); /* Giống Bootstrap input */
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border: 1px solid #ced4da;
+            border-radius: .375rem;
+        }
+</style>
+
+
+
+<div class="container py-5" style="max-width: 500px;">
+    <h2 class="text-center mb-4 fw-bold text-primary">📝 Register</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-warning">@TempData["Message"]</div>
+    }
+
+    <form method="post" class="bg-light p-4 rounded shadow-sm needs-validation" novalidate>
+        <div class="mb-3">
+            <label asp-for="registerDTO.UserName" class="form-label">Full Name</label>
+            <input asp-for="registerDTO.UserName" class="form-control" required placeholder="Your full name" />
+            <div class="invalid-feedback">Please enter your full name.</div>
+            <span asp-validation-for="registerDTO.UserName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="registerDTO.Email" class="form-label">Email</label>
+            <input asp-for="registerDTO.Email" class="form-control" type="email" required placeholder="example@email.com" />
+            <div class="invalid-feedback">Please enter a valid email address.</div>
+            <span asp-validation-for="registerDTO.Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="registerDTO.Password" class="form-label">Password</label>
+            <input asp-for="registerDTO.Password" class="form-control" type="password" required minlength="6" placeholder="Create a password" />
+            <div class="invalid-feedback">Password must be at least 6 characters.</div>
+            <span asp-validation-for="registerDTO.Password" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="registerDTO.ConfirmPassword" class="form-label">Confirm Password</label>
+            <input asp-for="registerDTO.ConfirmPassword" class="form-control" type="password" required placeholder="Re-enter your password" />
+            <div class="invalid-feedback">Please confirm your password.</div>
+            <span asp-validation-for="registerDTO.ConfirmPassword" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="registerDTO.PhoneNumber" class="form-label">Phone Number</label>
+            <input asp-for="registerDTO.PhoneNumber" class="form-control" type="tel" pattern="^[0-9\-\+\s\(\)]*$" required placeholder="e.g. 0912345678" />
+            <div class="invalid-feedback">Please enter a valid phone number.</div>
+            <span asp-validation-for="registerDTO.PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
+
+        <div class="text-center">
+            @* <p class="mb-2">Or sign up with</p> *@
+            @* <a class="btn btn-outline-danger w-100 mb-3" asp-page="/Auth/GoogleLogin"> *@
+            @*     <i class="fab fa-google me-2"></i> Google *@
+            @* </a> *@
+            <p>Already have an account? <a asp-page="/Auth/Login" class="text-decoration-underline">Login</a></p>
+            <a asp-page="/Home/Index" class="btn btn-outline-secondary mt-3">Back to Home</a>
+
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            forms.forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
+    <script>
+        const input = document.querySelector("#phone");
+        const form = input.closest("form");
+
+        const iti = window.intlTelInput(input, {
+            initialCountry: "auto",
+            geoIpLookup: callback => {
+                fetch("https://ipapi.co/json")
+                    .then(res => res.json())
+                    .then(data => callback(data.country_code.toLowerCase()))
+                    .catch(() => callback("us"));
+            },
+            preferredCountries: ["vn", "us", "fr", "jp"],
+            
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        // 🟢 Khi submit, thay input value thành số điện thoại chuẩn quốc tế
+        form.addEventListener("submit", function () {
+            input.value = iti.getNumber(); // ví dụ: +84981234567
+        });
+    </script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hiển thị thông báo thành công
+        @if (TempData["Message"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: '@TempData["Message"]'
+                            });
+            </text>
+        }
+
+            // Hiển thị thông báo lỗi
+        @if (TempData["Error"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: '@TempData["Error"]'
+                            });
+            </text>
+        }
+        });
+    </script>
+}

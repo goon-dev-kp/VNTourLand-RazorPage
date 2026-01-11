@@ -1,0 +1,16 @@
+﻿@page
+@model VNTourLandProject.Pages.Demo.UploadModel
+@{
+}
+
+<h2>Upload file to Firebase Storage</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="FileUpload" />
+    <button type="submit">Upload</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.UploadUrl))
+{
+    <p>File uploaded: <a href="@Model.UploadUrl" target="_blank">View File</a></p>
+}

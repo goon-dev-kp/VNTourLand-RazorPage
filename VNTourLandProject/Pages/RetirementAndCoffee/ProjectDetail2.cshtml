@@ -1,0 +1,589 @@
+﻿@page
+@model VNTourLandProject.Pages.RetirementAndCoffee.ProjectDetail2Model
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Project Detail 2";
+}
+
+<style>
+    .breadcrumb-item.active > a {
+        color: white !important;
+        opacity: 1 !important;
+        text-decoration: none;
+    }
+</style>
+
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="" class="navbar-brand p-0">
+            <h1 class="m-0">
+                <i class="fa-solid fa-at"></i>
+                VNTourLand
+            </h1>
+            <!-- <img src="img/logo.png" alt="Logo"> -->
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a asp-page="/Home/Index" class="nav-item nav-link ">Home</a>
+                <a asp-page="/AboutUs/Index" class="nav-item nav-link ">About</a>
+                <a asp-page="/TourAndService/Index" class="nav-item nav-link ">Tours</a>
+                <a asp-page="/SpecialService/Index" class="nav-item nav-link">MICE</a>
+                <a asp-page="/RetirementAndCoffee/Index" class="nav-item nav-link active">Project</a>
+                <a asp-page="/TravelInfo/Index" class="nav-item nav-link">Travel Information Center</a>
+                <a asp-page="/ClientsPartners/Index" class="nav-item nav-link">Investors</a>
+                <a asp-page="/Contact/Index" class="nav-item nav-link">Contact</a>
+
+
+            </div>
+            @if (!Model.isAuth)
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">More</a>
+                    <div class="dropdown-menu m-0">
+                        <a asp-page="/Auth/Login" class="dropdown-item">Login</a>
+                        <a asp-page="/Auth/Register" class="dropdown-item">Register</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">
+                        @Model.UserName
+                    </a>
+                    <div class="dropdown-menu m-0">
+
+                        <a asp-page="/Profile/Index" class="dropdown-item">Profile</a>
+
+                        <a asp-page="/Manage/MyBooking" class="dropdown-item">My Booking</a>
+
+                        <a asp-page="/Manage/MyTour" class="dropdown-item">My Tour</a>
+
+
+                        <a asp-page="/Auth/Logout" class="dropdown-item">Logout</a>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </nav>
+</div>
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            Project Detail</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item active"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item  active text-white">Project</li>
+                <li class="breadcrumb-item active text-white ">Project Detail</li>
+
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+<!-- Project Detail Page -->
+<div class="container py-5">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-primary">50+ Retirement Village – A Meaningful Lifestyle Destination</h1>
+        <p class="lead text-muted" style="max-width: 800px; margin: 0 auto;">
+            A community designed for connection, lifelong learning, health, creativity, and shared values — redefining retirement in Vietnam.
+        </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row g-5">
+        <div class="col-lg-7">
+            <img src="~/img/retire-final.jpg" class="img-fluid rounded shadow-sm mb-4" alt="50+ Retirement Village" />
+
+            <h3 class="text-primary fw-semibold mb-3">Project Introduction</h3>
+            <p>
+                As the aging population grows and demand for purposeful, active living environments increases, the 50+ Retirement Village project was born to redefine retirement in Vietnam — starting from the vibrant coastal city of Da Nang and expanding to other promising regions.
+            </p>
+            <p>
+                This is not just a place to retire — it is a community designed for connection, lifelong learning, health, creativity, and shared values. Here, residents never feel bored or isolated. Instead, they enjoy nature, participate in daily meaningful activities, and have opportunities to mentor younger generations.
+            </p>
+
+            <h4 class="mt-4 fw-bold">For Investors: Live Well & Invest Smart</h4>
+            <p>
+                Unlike conventional retirement models with high recurring costs, our project offers a co-investment opportunity where investors own equity shares in the village and gain lifetime residency benefits without annual fees.
+            </p>
+            <ul class="list-unstyled">
+                <li><i class="fa fa-check text-success me-2"></i>Generate profit from a rising retirement village business model in Asia.</li>
+                <li><i class="fa fa-check text-success me-2"></i>Enjoy lifetime accommodation rights or transfer them to others, free of typical maintenance and service charges.</li>
+            </ul>
+            <p>
+                This is not only a place to stay — it’s a revenue-generating, socially impactful investment that gives you both financial return and emotional satisfaction.
+            </p>
+
+            <h4 class="mt-4 fw-bold">A Place to Live – A Community to Belong To</h4>
+            <p>
+                Retirement should not be an end — it should be a new beginning. At the 50+ Retirement Village, you can:
+            </p>
+            <ul class="list-unstyled">
+                <li><i class="fa fa-check text-success me-2"></i>Live in a safe, green, wellness-focused environment.</li>
+                <li><i class="fa fa-check text-success me-2"></i>Connect with like-minded retirees from around the world.</li>
+                <li><i class="fa fa-check text-success me-2"></i>Engage in cultural, recreational, and wellness activities.</li>
+                <li><i class="fa fa-check text-success me-2"></i>Contribute to youth entrepreneurship as mentors or advisors.</li>
+                <li><i class="fa fa-check text-success me-2"></i>Stay physically and mentally active with purpose-driven routines.</li>
+            </ul>
+
+            <h4 class="mt-4 fw-bold">Join Us Now – Invest in a Life Well-Lived</h4>
+            <p>
+                We are currently inviting investors and co-founders to participate in this unique and impactful initiative. This is a rare chance to get in early on a high-potential, value-based lifestyle model that addresses both social and economic needs in Vietnam’s emerging silver economy.
+            </p>
+
+            <div class="alert alert-primary mt-4" role="alert">
+                📧 For more details, please contact: <strong>info@vntourland.com</strong>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-5">
+            <div class="bg-white border border-primary rounded shadow-sm p-4">
+                <h5 class="fw-bold mb-3 text-primary">Project Overview</h5>
+                <ul class="list-unstyled text-muted small">
+                    <li><strong>Type:</strong> Retirement & Lifestyle Community</li>
+                    <li><strong>Location:</strong> Da Nang & expanding regions, Vietnam</li>
+                    <li><strong>Focus:</strong> Active, purposeful senior living</li>
+                    <li><strong>Model:</strong> Co-investment & lifetime residency</li>
+                    <li><strong>Start Year:</strong> 2025</li>
+                    <li><strong>Target Audience:</strong> Individuals 50+ seeking community and wellness</li>
+                </ul>
+                <hr>
+                <h6 class="text-dark">Next Steps</h6>
+                <ol class="small">
+                    <li>Contact us via email</li>
+                    <li>Schedule a discovery call</li>
+                    <li>Receive business proposal & financial forecast</li>
+                    <li>Start your onboarding process</li>
+                </ol>
+                <a href="mailto:infovntourland@gmail.com" class="btn btn-primary w-100 mt-3">Request Info</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Chat Icon Button -->
+<div class="position-fixed bottom-0 end-0 mb-3 me-3">
+    <button id="chatToggleBtn"
+            class="btn btn-primary rounded-circle shadow position-relative"
+            style="width: 60px; height: 60px;"
+            onclick="toggleChatPanel()">
+        <i class="fa fa-comments fs-4"></i>
+    </button>
+</div>
+
+<!-- Floating Chat Panel -->
+<div id="chatBar" class="position-fixed bottom-0 end-0 me-3 mb-3 d-none" style="z-index: 1060;">
+    <div class="card shadow-lg rounded-4 overflow-hidden" style="width: 480px; height: 520px;">
+        <div class="row g-0 h-100">
+            <!-- Customer list -->
+            <div class="col-5 border-end bg-white overflow-auto">
+                <div class="d-flex justify-content-between align-items-center p-3 border-bottom bg-light fw-semibold">
+                    <span id="floatingChatTitle" class="text-truncate">Select a user to start chatting</span>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="hideChatPanel()">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <!-- Customer list -->
+                <div id="chatCustomerList">
+                    @if (Model.ChatCustomers != null && Model.ChatCustomers.Any())
+                    {
+                        foreach (var customer in Model.ChatCustomers)
+                        {
+                            <div onclick="openFloatingChat('@customer.UserName', '@customer.UserId')" class="chat-user-item list-group-item list-group-item-action border-0 text-start py-3 px-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2" style="width: 36px; height: 36px; font-weight: bold;">
+                                        @customer.UserName.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <span>@customer.UserName</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted p-3">No users to chat with yet</div>
+                    }
+                </div>
+            </div>
+
+            <!-- Chat box -->
+            <div class="col-7 d-flex flex-column bg-light position-relative">
+                <!-- Messages -->
+                <div id="floatingChatContent" class="flex-fill overflow-auto p-3" style="font-size: 14px; max-height: 440px;"></div>
+
+                <!-- Chat input area -->
+                <!-- Chat input area -->
+                <div id="floatingChatInputArea" class="border-top p-3 bg-white d-none" style="flex-shrink: 0;">
+                    <form id="chatForm" enctype="multipart/form-data" onsubmit="return sendFloatingMessageWithImage(event)" class="d-flex align-items-center gap-2">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Textarea with padding-right for icons -->
+                        <textarea id="floatingMessageInput"
+                                  class="form-control flex-grow-1"
+                                  placeholder="Type..."
+                                  rows="1"
+                                  style="
+                    resize: none;
+                    min-height: 48px;
+                    max-height: 120px;
+                    padding: 10px 90px 10px 15px;
+                    border-radius: 25px;
+                    box-shadow: 0 0 5px rgb(0 0 0 / 0.1);
+                    border: 1px solid #ccc;
+                    font-size: 15px;
+                    overflow-y: auto;
+                    outline: none;
+                  "></textarea>
+
+                        <!-- Icons container -->
+                        <div style="position: relative; width: 85px; height: 48px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-left: -85px;">
+                            <!-- File upload -->
+                            <label for="floatingImageInput" title="Attach Image" style="cursor: pointer; color: #555;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+                                    <path d="M8.5 1a3.5 3.5 0 0 0-3.5 3.5v7a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 0-1 0v5.5a1.5 1.5 0 0 1-3 0v-7A2.5 2.5 0 0 1 8.5 2h1a.5.5 0 0 0 0-1h-1z" />
+                                </svg>
+                            </label>
+                            <input type="file" id="floatingImageInput" accept="image/*" style="display:none" />
+                            <!-- Send button -->
+                            <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 50%; padding: 0; cursor: pointer;" title="Send Message">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                                    <path d="M15.964 0.686a.5.5 0 0 0-.65-.65L.767 6.767a.5.5 0 0 0-.106.79l6.646 6.646a.5.5 0 0 0 .79-.106l6.853-14.31z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                    <div id="selectedFileName" style="font-size: 12px; color: #555; margin-top: 4px; max-width: 480px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: none;"></div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+                                    @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script>
+        let CURRENT_CHAT_CUSTOMER_ID = null;
+        const CURRENT_USER_ID = "@Model.CurrentUserId";
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chathub")
+            .build();
+
+        connection.start()
+            .then(() => console.log("✅ SignalR connected"))
+            .catch(err => console.error("❌ SignalR connection failed:", err));
+
+        connection.on("ReceiveMessage", function (senderId, message) {
+            const align = senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+            const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+            const nameTag = align === 'text-end' ? 'You' : 'Other';
+
+            const chatBar = document.getElementById("chatBar");
+            const chat = document.getElementById("floatingChatContent");
+
+            if (!chatBar.classList.contains("d-none") && CURRENT_CHAT_CUSTOMER_ID === senderId) {
+                chat.innerHTML += `
+                    <div class="${align} mb-2">
+                        <div class="d-inline-block px-3 py-2 rounded ${color}">${nameTag}: ${message}</div>
+                    </div>`;
+                chat.scrollTop = chat.scrollHeight;
+            } else {
+                showFloatingNotification("New message", message);
+                openFloatingChat("Customer", senderId);
+
+                const chatBtn = document.getElementById("chatToggleBtn");
+                if (chatBtn) {
+                    chatBtn.classList.add("animate__animated", "animate__tada");
+                    setTimeout(() => chatBtn.classList.remove("animate__animated", "animate__tada"), 1000);
+                }
+            }
+        });
+
+        connection.on("ReceiveChatUser", function (newUserId) {
+            fetch("/RetirementAndCoffee/ProjectDetail2?handler=ChatCustomers")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        updateChatCustomerList(data.result);
+                        const newUser = data.result.find(u => u.userId === newUserId);
+                        const name = newUser ? newUser.userName : "Someone";
+                        showFloatingNotification("New chat started", `${name} has just sent you a message.`);
+                    }
+                });
+        });
+
+        function updateChatCustomerList(users) {
+            const container = document.getElementById("chatCustomerList");
+            container.innerHTML = "";
+            if (!users || users.length === 0) {
+                container.innerHTML = `<div class="text-center text-muted p-3">No users to chat with yet</div>`;
+                return;
+            }
+            users.forEach(u => {
+                const initial = u.userName?.charAt(0)?.toUpperCase() || "?";
+                container.innerHTML += `
+                    <div onclick="openFloatingChat('${u.userName}', '${u.userId}')"
+                        class="chat-user-item list-group-item list-group-item-action border-0 text-start py-3 px-3">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2"
+                                style="width: 36px; height: 36px; font-weight: bold;">
+                                ${initial}
+                            </div>
+                            <span>${u.userName}</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function toggleChatPanel() {
+            const panel = document.getElementById("chatBar");
+            const isNowVisible = panel.classList.toggle("d-none");
+            if (!isNowVisible) {
+                const badge = document.getElementById("chatAlertBadge");
+                if (badge) badge.remove();
+            }
+        }
+
+        function hideChatPanel() {
+            document.getElementById("chatBar").classList.add("d-none");
+            closeFloatingChat();
+        }
+
+        async function openFloatingChat(name, customerId) {
+              CURRENT_CHAT_CUSTOMER_ID = customerId;
+              document.getElementById("floatingChatTitle").innerText = name;
+
+              const chat = document.getElementById("floatingChatContent");
+              chat.innerHTML = '<div class="text-muted">Loading messages...</div>';
+
+              try {
+                  const res = await fetch(`/RetirementAndCoffee/ProjectDetail2?handler=Chat&customerId=${customerId}`);
+                  const data = await res.json();
+                  chat.innerHTML = "";
+
+                  if (data.success) {
+                      data.result.forEach(m => {
+                          const align = m.senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+                          const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+                          const nameTag = align === 'text-end' ? 'You' : m.senderName;
+
+                          chat.innerHTML += `<div class="${align} mb-3">`;
+
+                          // Nếu có nội dung văn bản
+                          if (m.content) {
+                              chat.innerHTML += `
+                                  <div class="d-inline-block px-3 py-2 rounded ${color}">
+                                      ${nameTag}: ${m.content}
+                                  </div>`;
+                          }
+
+                          // Nếu có ảnh
+                          if (m.imageUrl) {
+                              chat.innerHTML += `
+                                  <div class="mt-2">
+                                      <img src="${m.imageUrl}" class="img-thumbnail" style="max-width: 220px; border-radius: 10px;" />
+                                  </div>`;
+                          }
+
+                          chat.innerHTML += `</div>`;
+                      });
+
+                      chat.scrollTop = chat.scrollHeight;
+                      document.getElementById("floatingChatInputArea")?.classList.remove("d-none");
+                  } else {
+                      chat.innerHTML = `<div class="text-danger">${data.message}</div>`;
+                  }
+              } catch (e) {
+                  chat.innerHTML = `<div class="text-danger">Failed to load chat</div>`;
+              }
+
+              document.getElementById("floatingChat").classList.remove("d-none");
+              document.getElementById("floatingChatInputArea").classList.remove("d-none");
+          }
+
+        function closeFloatingChat() {
+            CURRENT_CHAT_CUSTOMER_ID = null;
+            document.getElementById("floatingChat").classList.add("d-none");
+            document.getElementById("floatingChatInputArea").classList.add("d-none");
+            clearFloatingInput();
+        }
+
+        function clearFloatingInput() {
+            document.getElementById("floatingMessageInput").value = "";
+            document.getElementById("selectedFileName").innerText = "";
+            document.getElementById("floatingImageInput").value = "";
+        }
+
+        async function sendFloatingMessageWithImage(e) {
+            e.preventDefault();
+
+            if (!CURRENT_CHAT_CUSTOMER_ID) {
+                showFloatingNotification("Warning", "Please select a user to chat with first.");
+                return false;
+            }
+
+            const messageInput = document.getElementById("floatingMessageInput");
+            const message = messageInput.value.trim();
+            const fileInput = document.getElementById("floatingImageInput");
+            const file = fileInput.files[0];
+
+            if (!message && !file) {
+                showFloatingNotification("Warning", "Please enter a message or attach an image.");
+                return false;
+            }
+
+            const formData = new FormData();
+            formData.append("CustomerId", CURRENT_CHAT_CUSTOMER_ID);
+            formData.append("Message", message);
+            if (file) formData.append("Image", file);
+
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const res = await fetch("/RetirementAndCoffee/ProjectDetail2?handler=SendChat", {
+                    method: "POST",
+                    headers: { "RequestVerificationToken": token },
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showFloatingNotification("Success", "Message sent.");
+                    messageInput.value = "";
+                    fileInput.value = "";
+                    document.getElementById("selectedFileName").innerText = "";
+                  appendFloatingMessage(CURRENT_USER_ID, message || "[Image]", data.imageUrl);
+
+                    connection.invoke("SendMessage", CURRENT_CHAT_CUSTOMER_ID, message);
+                } else {
+                    showFloatingNotification("Error", data.message || "Failed to send message.");
+                }
+            } catch (err) {
+                showFloatingNotification("Error", "Failed to send message.");
+            }
+
+            return false;
+        }
+
+               function appendFloatingMessage(senderId, message, imageUrl = null) {
+            const chat = document.getElementById("floatingChatContent");
+            const align = senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+            const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+            const nameTag = align === 'text-end' ? 'You' : 'Other';
+
+            let content = `<div class="${align} mb-2">
+                <div class="d-inline-block px-3 py-2 rounded ${color}">${nameTag}: ${message}</div>
+            </div>`;
+
+            if (imageUrl) {
+                content += `<div class="${align} mb-2">
+                    <img src="${imageUrl}" class="img-thumbnail" style="max-width: 200px;" />
+                </div>`;
+            }
+
+            chat.innerHTML += content;
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+
+        function showFloatingNotification(title, message) {
+            // Xoá toast cũ nếu có
+            const oldToast = document.getElementById("chatToast");
+            if (oldToast) oldToast.remove();
+
+            // Tạo thông báo
+            const toast = document.createElement("div");
+            toast.id = "chatToast";
+            toast.className = "toast align-items-center text-bg-primary border-0 position-fixed bottom-0 end-0 mb-5 me-3 show";
+            toast.style.zIndex = "9999";
+            toast.setAttribute("role", "alert");
+            toast.setAttribute("aria-live", "assertive");
+            toast.setAttribute("aria-atomic", "true");
+
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong>${title}:</strong> ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+
+            document.body.appendChild(toast);
+
+            // 👉 Thêm icon đỏ vào nút chat nếu chưa có
+            const btn = document.getElementById("chatToggleBtn");
+            if (btn && !document.getElementById("chatAlertBadge")) {
+                const badge = document.createElement("span");
+                badge.id = "chatAlertBadge";
+                badge.className = "position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle";
+                badge.style.zIndex = "10001";
+                btn.appendChild(badge);
+            }
+
+            // Ẩn thông báo sau 5s
+            setTimeout(() => {
+                toast.classList.remove("show");
+                toast.remove();
+            }, 5000);
+            }
+        // Display selected file name below input
+        document.getElementById("floatingImageInput").addEventListener("change", function () {
+            const fileNameContainer = document.getElementById("selectedFileName");
+            if (this.files.length > 0) {
+                fileNameContainer.innerText = `Selected file: ${this.files[0].name}`;
+            } else {
+                fileNameContainer.innerText = "";
+            }
+        });
+
+        // Auto-grow textarea height on input
+        document.getElementById("floatingMessageInput").addEventListener("input", function () {
+            this.style.height = "auto";
+            this.style.height = (this.scrollHeight) + "px";
+        });
+
+    </script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hiển thị thông báo thành công
+        @if (TempData["Message"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: '@TempData["Message"]'
+                            });
+            </text>
+        }
+
+            // Hiển thị thông báo lỗi
+        @if (TempData["Error"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: '@TempData["Error"]'
+                            });
+            </text>
+        }
+        });
+    </script>
+    }

@@ -1,0 +1,170 @@
+﻿@page
+@model VNTourLandProject.Pages.SpecialService.ServiceDetailModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Special Service";
+}
+
+
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="" class="navbar-brand p-0">
+            <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>VNTourLand</h1>
+            <!-- <img src="img/logo.png" alt="Logo"> -->
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a asp-page="/Home/Index" class="nav-item nav-link ">Home</a>
+                <a asp-page="/AboutUs/Index" class="nav-item nav-link ">About</a>
+                <a asp-page="/TourAndService/Index" class="nav-item nav-link ">Tours</a>
+                <a asp-page="/SpecialService/Index" class="nav-item nav-link active">Special</a>
+                <a asp-page="/RetirementAndCoffee/Index" class="nav-item nav-link">Project</a>
+                <a asp-page="/TravelInfo/Index" class="nav-item nav-link">Travel Information Center</a>
+                <a asp-page="/ClientsPartners/Index" class="nav-item nav-link">Partners</a>
+                <a asp-page="/Contact/Index" class="nav-item nav-link">Contact</a>
+
+               
+
+            </div>
+            @if (!Model.isAuth)
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">More</a>
+                    <div class="dropdown-menu m-0">
+                        <a asp-page="/Auth/Login" class="dropdown-item">Login</a>
+                        <a asp-page="/Auth/Register" class="dropdown-item">Register</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">
+                        @Model.UserName
+                    </a>
+                    <div class="dropdown-menu m-0">
+
+                        <a asp-page="/User/Profile" class="dropdown-item">Profile</a>
+
+                        <a asp-page="/Manage/MyBooking" class="dropdown-item">My Booking</a>
+
+                        <a asp-page="/Manage/MyTour" class="dropdown-item">My Tour</a>
+
+
+                        <a asp-page="/Auth/Logout" class="dropdown-item">Logout</a>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </nav>
+</div>
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            Our Services</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Service</a></li>
+                <li class="breadcrumb-item active text-white">Service Detail</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+<div class="container py-5">
+    <!-- Title -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">Custom Tour Planning</h2>
+        <p class="text-muted">Tailored itineraries for individuals, families, and private groups</p>
+    </div>
+
+    <div class="row g-5">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm p-4 bg-white">
+                <!-- Image -->
+                <div class="position-relative mb-4">
+                    <img src="~/img/tour-booking-bg.jpg" class="img-fluid rounded-4 w-100" alt="Custom Tour">
+                    <div class="position-absolute top-0 start-0 bg-primary text-white px-3 py-1 rounded-bottom-end">
+                        Tailor-Made Experience
+                    </div>
+                </div>
+
+                <!-- Introduction -->
+                <h3 class="fw-bold text-primary mb-3">Plan Your Perfect Trip with VN Tourland</h3>
+                <p class="mb-4">
+                    Looking for a travel experience that’s fully personalized to your style? We specialize in designing exclusive tours for:
+                </p>
+
+                <!-- Feature List -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fa fa-calendar-alt text-primary me-3 fs-4"></i>
+                            <span>Flexible itineraries based on your preferences</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fa fa-plane text-primary me-3 fs-4"></i>
+                            <span>Flight & hotel bookings to match your budget</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fa fa-user-tie text-primary me-3 fs-4"></i>
+                            <span>Private guides in your preferred language</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <i class="fa fa-headset text-primary me-3 fs-4"></i>
+                            <span>24/7 dedicated customer support</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Process -->
+                <h5 class="fw-semibold mb-3">Booking Process</h5>
+                <div class="ps-3 border-start border-3 border-primary">
+                    <ol class="mb-0">
+                        <li class="mb-2">Submit your request via the form or call our hotline</li>
+                        <li class="mb-2">We provide consultation, finalize your itinerary & quote</li>
+                        <li>Confirm your booking and prepare for your journey</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Sidebar / CTA -->
+        <div class="col-lg-4">
+            <div class="bg-white rounded p-4 shadow-sm border border-primary">
+                <h5 class="fw-bold mb-3">📩 Request a Consultation</h5>
+                <form>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Your Full Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <input type="tel" class="form-control" placeholder="Phone Number" required />
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control" placeholder="Email Address" required />
+                    </div>
+                    <div class="mb-3">
+                        <textarea rows="3" class="form-control" placeholder="Describe your request..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Send Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,90 @@
+﻿@page
+@model VNTourLandProject.Pages.Auth.LoginModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Login";
+}
+
+<div class="container py-5" style="max-width: 500px;">
+    <h2 class="text-center mb-4 fw-bold text-primary">🔐 Login</h2>
+
+    <form method="post" asp-page="./Login" class="bg-light p-4 rounded shadow-sm" novalidate>
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            <input id="Email" name="loginDTO.Email" class="form-control" type="email" required
+                   placeholder="Enter your email" />
+            <div class="invalid-feedback">Please enter a valid email address.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="Password" class="form-label">Password</label>
+            <input id="Password" name="loginDTO.Password" class="form-control" type="password" required
+                    placeholder="Enter your password" />
+            <div class="invalid-feedback">Please enter password.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+
+        <div class="text-center">
+            @* <p class="mb-2">Or login with</p> *@
+            @* <a class="btn btn-outline-danger w-100 mb-3" asp-page="/Auth/GoogleLogin"> *@
+            @*     <i class="fab fa-google me-2"></i> Google *@
+            @* </a> *@
+            <p>
+                Don't have an account?
+                <a asp-page="/Auth/Register" class="text-decoration-underline">Register now</a>
+            </p>
+
+            <a asp-page="/Home/Index" class="btn btn-outline-secondary mt-3">Back to Home</a>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        (function () {
+            'use strict';
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hiển thị thông báo thành công
+        @if (TempData["Message"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: '@TempData["Message"]'
+                            });
+            </text>
+        }
+
+            // Hiển thị thông báo lỗi
+        @if (TempData["Error"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: '@TempData["Error"]'
+                            });
+            </text>
+        }
+        });
+    </script>
+}

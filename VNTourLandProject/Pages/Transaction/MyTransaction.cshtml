@@ -1,0 +1,115 @@
+﻿@page
+@model VNTourLandProject.Pages.Transaction.MyTransactionModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Tour and Service";
+}
+
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="" class="navbar-brand p-0">
+            <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>VNTourLand</h1>
+            <!-- <img src="img/logo.png" alt="Logo"> -->
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a asp-page="/Home/Index" class="nav-item nav-link ">Home</a>
+                <a asp-page="/AboutUs/Index" class="nav-item nav-link ">About</a>
+                <a asp-page="/TourAndService/Index" class="nav-item nav-link active">Tours</a>
+                <a asp-page="/SpecialService/Index" class="nav-item nav-link">Special</a>
+                <a asp-page="/RetirementAndCoffee/Index" class="nav-item nav-link">Retire & Coffee</a>
+                <a asp-page="/NewsAndBlog/Index" class="nav-item nav-link">Blog</a>
+                <a asp-page="/ClientsPartners/Index" class="nav-item nav-link">Partners</a>
+                <a asp-page="/Contact/Index" class="nav-item nav-link">Contact</a>
+
+                @* <div class="nav-item dropdown"> *@
+                @*     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a> *@
+                @*     <div class="dropdown-menu m-0"> *@
+                @*         <a href="destination.html" class="dropdown-item">Destination</a> *@
+                @*         <a href="tour.html" class="dropdown-item">Explore Tour</a> *@
+                @*         <a href="booking.html" class="dropdown-item">Travel Booking</a> *@
+                @*         <a href="gallery.html" class="dropdown-item">Our Gallery</a> *@
+                @*         <a href="guides.html" class="dropdown-item">Travel Guides</a> *@
+                @*         <a href="testimonial.html" class="dropdown-item">Testimonial</a> *@
+                @*         <a href="404.html" class="dropdown-item">404 Page</a> *@
+                @*     </div> *@
+                @* </div> *@
+
+            </div>
+            <div class="nav-item dropdown">
+                <a href="" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4" data-bs-toggle="dropdown">Name</a>
+                <div class="dropdown-menu m-0">
+                    <a href="destination.html" class="dropdown-item">Login</a>
+                    <a href="tour.html" class="dropdown-item">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            Travel Packages</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item active text-white">Packages</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Transaction Table -->
+<div class="container py-5">
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-bordered align-middle table-hover">
+            <thead class="table-success text-center align-middle">
+                <tr>
+                    <th>#</th>
+                    <th>Tên Tour</th>
+                    <th>Ngày Booking</th>
+                    <th>Số tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày chuyển khoản</th>
+                    <th>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 1; i <= 4; i++)
+                {
+                    var status = i switch
+                    {
+                        1 => "Đã chuyển khoản",
+                        2 => "Đang xác nhận",
+                        3 => "Hoàn tất",
+                        _ => "Chờ thanh toán"
+                    };
+                    var badge = status switch
+                    {
+                        "Đã chuyển khoản" => "bg-warning text-dark",
+                        "Đang xác nhận" => "bg-info text-white",
+                        "Hoàn tất" => "bg-success",
+                        _ => "bg-secondary"
+                    };
+                    <tr>
+                        <td class="text-center">@i</td>
+                        <td>Tour du lịch Đà Lạt @((i + 2) * 2)N@(i + 1)Đ</td>
+                        <td>2024-07-@((10 + i).ToString("D2"))</td>
+                        <td>@((i + 2) * 1_000_000):n0 đ</td>
+                        <td class="text-center">
+                            <span class="badge @badge">@status</span>
+                        </td>
+                        <td>2024-07-@((15 + i).ToString("D2"))</td>
+                        <td>Chuyển khoản qua Vietcombank</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

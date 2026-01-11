@@ -1,0 +1,1469 @@
+﻿@page
+@model VNTourLandProject.Pages.Home.IndexModel
+@{
+	Layout = "_Layout"; 
+	ViewData["Title"] = "Home";
+}
+<style>
+    .split-bg-vertical {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+    .bg-top {
+        flex: 1;
+        background: #e6f0fa;
+        color: #003366;
+        backdrop-filter: blur(4px);
+        border-bottom-left-radius: 40px;
+        border-bottom-right-radius: 40px;
+    }
+
+    .bg-bottom {
+        flex: 1;
+        background: white;
+        color: #003366;
+        border-top-left-radius: 40px;
+        border-top-right-radius: 40px;
+        margin-top: -40px; /* để khớp */
+        z-index: 1;
+        position: relative;
+    }
+
+    
+    .breadcrumb-item.active > a {
+        color: white !important;
+        opacity: 1 !important;
+        text-decoration: none;
+    }
+    /* Floating Box */
+    .founder-box {
+        position: fixed;
+        top: 100px;
+        left: 30px;
+        background: linear-gradient(135deg, #e0f0ff, #ffffff);
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        cursor: pointer;
+        z-index: 999;
+        display: none;
+        animation: slideIn 0.4s ease-out;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-left: 5px solid #007BFF;
+    }
+
+        .founder-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+        }
+
+    .founder-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 16px;
+        border: 2px solid #007BFF;
+    }
+
+    .founder-text {
+        font-size: 15px;
+        line-height: 1.4;
+        font-weight: 500;
+        color: #333;
+    }
+
+        .founder-text span {
+            font-size: 13px;
+            color: #555;
+        }
+
+    /* Close button */
+    .founder-close {
+        margin-left: 12px;
+        font-size: 22px;
+        color: #999;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+        .founder-close:hover {
+            color: #000;
+        }
+
+    /* Toggle Button */
+    .founder-toggle {
+        position: fixed;
+        top: 100px;
+        left: 30px;
+        background: #007BFF;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        font-size: 14px;
+        z-index: 998;
+        transition: background-color 0.2s ease;
+    }
+
+        .founder-toggle:hover {
+            background-color: #005bb5;
+        }
+
+    /* Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 6% auto;
+        padding: 30px;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 700px;
+        font-size: 16px;
+        line-height: 1.7;
+        position: relative;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 14px;
+        right: 20px;
+        font-size: 26px;
+        font-weight: bold;
+        color: #888;
+        cursor: pointer;
+    }
+
+        .close-modal:hover {
+            color: #000;
+        }
+
+    /* Animation */
+    keyframes slideIn {
+        from
+
+    {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+
+   
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    }
+</style>
+
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="" class="navbar-brand p-0">
+            <h1 class="m-0">
+                <i class="fa-solid fa-at"></i>
+                VNTourLand
+            </h1>
+            <!-- <img src="img/logo.png" alt="Logo"> -->
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a asp-page="/Home/Index" class="nav-item nav-link active">Home</a>
+                <a asp-page="/AboutUs/Index" class="nav-item nav-link">About</a>
+                <a asp-page="/TourAndService/Index" class="nav-item nav-link">Tours</a>
+                <a asp-page="/SpecialService/Index" class="nav-item nav-link">MICE</a>
+                <a asp-page="/RetirementAndCoffee/Index" class="nav-item nav-link">Project</a>
+                <a asp-page="/TravelInfo/Index" class="nav-item nav-link">Travel Information Center</a>
+                <a asp-page="/ClientsPartners/Index" class="nav-item nav-link">Investors</a>
+                <a asp-page="/Contact/Index" class="nav-item nav-link">Contact</a>
+                
+            </div>
+            @if (!Model.isAuth)
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">More</a>
+                    <div class="dropdown-menu m-0">
+                        <a asp-page="/Auth/Login" class="dropdown-item">Login</a>
+                        <a asp-page="/Auth/Register" class="dropdown-item">Register</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">
+                        @Model.UserName
+                    </a>
+                    <div class="dropdown-menu m-0">
+
+                        <a asp-page="/Profile/Index" class="dropdown-item">Profile</a>
+                        
+                        <a asp-page="/Manage/MyBooking" class="dropdown-item">My Booking</a>
+
+                        <a asp-page="/Manage/MyTour" class="dropdown-item">My Tour</a>
+
+                        
+                        <a asp-page="/Auth/Logout" class="dropdown-item">Logout</a>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </nav>
+
+    <!-- Carousel Start -->
+    <div class="carousel-header">
+        <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="1"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="2"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="3"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="4"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="5"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="6"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="7"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="8"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="9"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="10"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="11"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide1.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Welcome to VN Tour Land</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Your Gateway to Vietnam & Beyond</h1>
+                            <p class="mb-5 fs-5">Crafting unforgettable journeys and strategic lifestyle investments across Vietnam and internationally.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide2.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">VN Tour Land Projects</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Strategic Investments & Franchising</h1>
+                            <p class="mb-5 fs-5">Presented by Tri Nguyen | June 15, 2025<br>Contact: info@vntourland.com | WhatsApp/Zalo: +84.38.951.3625</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide3.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">About Us</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Not Just Travel — A Lifestyle Partner</h1>
+                            <p class="mb-5 fs-5">From curated tours to visionary development projects, VN Tour Land connects people with culture, community, and opportunity.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide4.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Retirement Village</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Vibrant Living for Global Retirees</h1>
+                            <p class="mb-5 fs-5">A wellness-oriented haven in Da Nang for retirees seeking comfort, community, and purpose.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 5 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide5.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Project Overview</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Retirement Village – Phase 1</h1>
+                            <p class="mb-5 fs-5">Da Nang | Feasibility complete | 100% foreign ownership via long-term lease | Target: Global retirees</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 6 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide6.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Village Features</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Wellness, Innovation & Sustainability</h1>
+                            <p class="mb-5 fs-5">• Independent & assisted living<br>• Eco design | Net-zero ready<br>• Medical + mentoring + community recreation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 7 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide7.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Investment Opportunity</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Retirement Village Returns</h1>
+                            <p class="mb-5 fs-5">• $26M capital needed | IRR: 18–25%<br>• Break-even ~3 years<br>• Phase 1: Infra & pilot housing</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 8 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide8.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Introducing Saigon Caoboi</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Vietnamese Coffee Meets American Spirit</h1>
+                            <p class="mb-5 fs-5">Themed cafés + general stores bringing Saigon flavor & cowboy flair to Indiana & beyond.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 9 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide9.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Franchise Model</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Cafés & General Stores</h1>
+                            <p class="mb-5 fs-5">• Signature drinks + Saigon eats<br>• Handicrafts, fashion, herbs<br>• Strong branding + SME support + e-commerce</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 10 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide10.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">USA Launch Plan</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Saigon Caoboi – Indiana Rollout</h1>
+                            <p class="mb-5 fs-5">• Year 1: 1 café + 1 store pilot<br>• Year 2: 3–5 locations<br>• Partners: IPC, Saigon Caoboi Inc, U.S. franchisees</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 11 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide11.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Partner With Us</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Invest. Franchise. Collaborate.</h1>
+                            <p class="mb-5 fs-5">Opportunities open for equity, franchise, or branding partnerships — with strong ROI & impact.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 12 -->
+                <div class="carousel-item">
+                    <video autoplay muted loop class="w-100">
+                        <source src="~/videos/slide12.mp4" type="video/mp4">
+                    </video>
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Contact Us</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Thank You for Your Interest</h1>
+                            <p class="mb-5 fs-5">Tri Nguyen | +84.38.951.3625<br>info@vntourland.com | www.vntourland.com<br>johnvnglobal@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Carousel controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon btn bg-primary" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                <span class="carousel-control-next-icon btn bg-primary" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+
+
+</div>
+<!-- Search Start-->
+@* <div class="container-fluid search-bar position-relative" style="top: -50%; transform: translateY(-50%);"> *@
+@*     <div class="container"> *@
+@*         <div class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(19, 53, 123, 0.8);"> *@
+@*             <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Thailand"> *@
+@*             <button type="button" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+<!-- Search End-->
+<!-- Navbar & Hero End -->
+<div class="split-bg-vertical">
+<!-- Introduce Start -->
+    <div class="container-fluid about py-5 bg-bottom">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-5">
+                <div class="h-200" style="border: 50px solid; border-color: transparent #13357B transparent #13357B;">
+                    <img src="~/img/about-img-2.jpg" class="img-fluid w-100 h-100" alt="About VN Tourland">
+                </div>
+            </div>
+            <div class="col-lg-7" style="background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url(img/about-img-1.png);">
+
+                @* MESSAGE FOUNDER *@
+                    <!-- 👇 Thêm đoạn này ngay TRƯỚC dòng <h5 class="section-about-title"> -->
+                    <div class="founder-inline-box mb-3 p-3 d-flex align-items-center shadow rounded" style="background: linear-gradient(135deg, #e0f0ff, #ffffff); border-left: 5px solid #007BFF;">
+                        <img src="~/img/founder.jpg" class="me-3 rounded-circle" style="width: 56px; height: 56px; object-fit: cover; border: 2px solid #007BFF;" alt="Founder">
+                        <div class="flex-grow-1">
+                            <strong>👨‍✈️ Tri Nguyen</strong><br>
+                            <small><em>Founder’s message – click to read 🌏</em></small>
+                        </div>
+                        <button id="founderInlineBtn" class="btn btn-sm btn-outline-primary ms-3">Read</button>
+                    </div>
+
+
+
+                <h5 class="section-about-title pe-3">About Us</h5>
+                <h1 class="mb-4">Welcome to <span class="text-primary">VN Tourland</span></h1>
+                <p class="mb-4">
+                    With over a decade of experience, VN Tourland is one of Vietnam’s most trusted travel agencies,
+                    offering both inbound and outbound tourism services. We specialize in crafting unforgettable journeys
+                    through cultural discovery, professional service, and exceptional value.
+                </p>
+                <p class="mb-4">
+                    From luxury escapes and customized adventures across Vietnam to international trips in over 30 countries,
+                    our expert team is dedicated to ensuring each trip is smooth, meaningful, and memorable.
+                </p>
+                <div class="row gy-2 gx-4 mb-4">
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Trusted Inbound & Outbound Tours</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Experienced Multilingual Guides</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Tailor-Made Itineraries</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Visa & Flight Assistance</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Group & Corporate Travel</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>24/7 Dedicated Support</p>
+                    </div>
+                </div>
+                <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" asp-page="/AboutUs/Index">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Introduce End -->
+
+<!-- Explore Tour Start -->
+<div class="container-fluid ExploreTour py-5 bg-top">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Explore Tour</h5>
+            <h1 class="mb-4">VN Tourland Categories</h1>
+            <p class="mb-0">
+                Discover a wide range of tours with VN Tourland – from exploring Vietnam’s hidden gems to reconnecting with your roots or cruising through paradise. Your ideal journey starts here.
+            </p>
+        </div>
+        <div class="tab-class text-center">
+            
+            <div class="tab-content">
+                <div id="NationalTab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="national-item">
+                                <img src="~/img/explore-tour-1.jpg" class="img-fluid w-100 rounded" alt="Image">
+                                <div class="national-content">
+                                    <div class="national-info">
+                                        <h5 class="text-white text-uppercase mb-2">Inbound Tours</h5>
+                                            <a asp-page="/TourAndService/TourByType" asp-route-TourType="INBOUND" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                    </div>
+                                </div>
+                                <div class="national-plus-icon">
+                                        <a asp-page="/TourAndService/TourByType" asp-route-TourType="INBOUND" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="national-item">
+                                <img src="~/img/explore-tour-2.jpg" class="img-fluid w-100 rounded" alt="Image">
+                                <div class="national-content">
+                                    <div class="national-info">
+                                        <h5 class="text-white text-uppercase mb-2">Outbound Tours</h5>
+                                            <a asp-page="/TourAndService/TourByType" asp-route-TourType="OUTBOUND" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                    </div>
+                                </div>
+                                <div class="national-plus-icon">
+                                        <a asp-page="/TourAndService/TourByType" asp-route-TourType="OUTBOUND" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="national-item">
+                                <img src="~/img/explore-tour-3.jpg" class="img-fluid w-100 rounded" alt="Image">
+                                <div class="national-content">
+                                    <div class="national-info">
+                                        <h5 class="text-white text-uppercase mb-2">Theme Programs</h5>
+                                            <a asp-page="/TourAndService/TourByType" asp-route-TourType="THEME" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                    </div>
+                                </div>
+                                @* <div class="tour-offer bg-info">15% Off</div> *@
+                                 <div class="national-plus-icon">
+                                        <a asp-page="/TourAndService/TourByType" asp-route-TourType="THEME" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                                    </div> 
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="national-item">
+                                <img src="~/img/explore-tour-4.jpg" class="img-fluid w-100 rounded" alt="Image">
+                                <div class="national-content">
+                                    <div class="national-info">
+                                        <h5 class="text-white text-uppercase mb-2">MICE</h5>
+                                            <a asp-page="/TourAndService/TourByType" asp-route-TourType="MICE" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                    </div>
+                                </div>
+                                <div class="national-plus-icon">
+                                        <a asp-page="/TourAndService/TourByType" asp-route-TourType="MICE" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                       @* ADD MORE *@
+                    </div>
+                </div>
+                <div id="InternationalTab-2" class="tab-pane fade show p-0">
+                    <div class="InternationalTour-carousel owl-carousel">
+                        <div class="international-item">
+                            <img src="~/img/explore-tour-1.jpg" class="img-fluid w-100 rounded" alt="Image">
+                            <div class="international-content">
+                                <div class="international-info">
+                                    <h5 class="text-white text-uppercase mb-2">Australia</h5>
+                                    <a href="#" class="btn-hover text-white me-4"><i class="fas fa-map-marker-alt me-1"></i> 8 Cities</a>
+                                    <a href="#" class="btn-hover text-white"><i class="fa fa-eye ms-2"></i> <span>143+ Tour Places</span></a>
+                                </div>
+                            </div>
+                            <div class="tour-offer bg-success">30% Off</div>
+                            <div class="international-plus-icon">
+                                <a href="#" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                        <div class="international-item">
+                            <img src="~/img/explore-tour-2.jpg" class="img-fluid w-100 rounded" alt="Image">
+                            <div class="international-content">
+                                <div class="international-info">
+                                    <h5 class="text-white text-uppercase mb-2">Germany</h5>
+                                    <a href="#" class="btn-hover text-white me-4"><i class="fas fa-map-marker-alt me-1"></i> 12 Cities</a>
+                                    <a href="#" class="btn-hover text-white"><i class="fa fa-eye ms-2"></i> <span>21+ Tour Places</span></a>
+                                </div>
+                            </div>
+                            <div class="international-plus-icon">
+                                <a href="#" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                        <div class="international-item">
+                            <img src="~/img/explore-tour-3.jpg" class="img-fluid w-100 rounded" alt="Image">
+                            <div class="international-content">
+                                <div class="tour-offer bg-warning">45% Off</div>
+                                <div class="international-info">
+                                    <h5 class="text-white text-uppercase mb-2">Spain</h5>
+                                    <a href="#" class="btn-hover text-white me-4"><i class="fas fa-map-marker-alt me-1"></i> 9 Cities</a>
+                                    <a href="#" class="btn-hover text-white"><i class="fa fa-eye ms-2"></i> <span>133+ Tour Places</span></a>
+                                </div>
+                            </div>
+                            <div class="international-plus-icon">
+                                <a href="#" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                        <div class="international-item">
+                            <img src="~/img/explore-tour-4.jpg" class="img-fluid w-100 rounded" alt="Image">
+                            <div class="international-content">
+                                <div class="international-info">
+                                    <h5 class="text-white text-uppercase mb-2">Japan</h5>
+                                    <a href="#" class="btn-hover text-white me-4"><i class="fas fa-map-marker-alt me-1"></i> 8 Cities</a>
+                                    <a href="#" class="btn-hover text-white"><i class="fa fa-eye ms-2"></i> <span>137+ Tour Places</span></a>
+                                </div>
+                            </div>
+                            <div class="international-plus-icon">
+                                <a href="#" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                        <div class="international-item">
+                            <img src="~/img/explore-tour-5.jpg" class="img-fluid w-100 rounded" alt="Image">
+                            <div class="international-content">
+                                <div class="tour-offer bg-info">70% Off</div>
+                                <div class="international-info">
+                                    <h5 class="text-white text-uppercase mb-2">London</h5>
+                                    <a href="#" class="btn-hover text-white me-4"><i class="fas fa-map-marker-alt me-1"></i> 17 Cities</a>
+                                    <a href="#" class="btn-hover text-white"><i class="fa fa-eye ms-2"></i> <span>26+ Tour Places</span></a>
+                                </div>
+                            </div>
+                            <div class="international-plus-icon">
+                                <a href="#" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Explore Tour Start -->
+
+<!-- Destination Start -->
+<div class="container-fluid destination py-5 ">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Destination</h5>
+            <h1 class="mb-0">Popular Destination</h1>
+        </div>
+        <div class="tab-class text-center">
+            @* <ul class="nav nav-pills d-inline-flex justify-content-center mb-5"> *@
+            @*     <li class="nav-item"> *@
+            @*         <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1"> *@
+            @*             <span class="text-dark" style="width: 150px;">All</span> *@
+            @*         </a> *@
+            @*     </li> *@
+            @*     <li class="nav-item"> *@
+            @*         <a class="d-flex py-2 mx-3 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2"> *@
+            @*             <span class="text-dark" style="width: 150px;">USA</span> *@
+            @*         </a> *@
+            @*     </li> *@
+            @*     <li class="nav-item"> *@
+            @*         <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3"> *@
+            @*             <span class="text-dark" style="width: 150px;">Canada</span> *@
+            @*         </a> *@
+            @*     </li> *@
+            @*     <li class="nav-item"> *@
+            @*         <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4"> *@
+            @*             <span class="text-dark" style="width: 150px;">Europe</span> *@
+            @*         </a> *@
+            @*     </li> *@
+            @*     <li class="nav-item"> *@
+            @*         <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5"> *@
+            @*             <span class="text-dark" style="width: 150px;">China</span> *@
+            @*         </a> *@
+            @*     </li> *@
+            @*     <li class="nav-item"> *@
+            @*         <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-6"> *@
+            @*             <span class="text-dark" style="width: 150px;">Singapore</span> *@
+            @*         </a> *@
+            @*     </li> *@
+            @* </ul> *@
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        <div class="col-xl-8">
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/img/destination-1.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            @* <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a> *@
+                                            <h4 class="text-white mb-2 mt-3">New York City</h4>
+                                            <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/img/destination-1.jpg" data-lightbox="destination-1"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/img/destination-2.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            
+                                            <h4 class="text-white mb-2 mt-3">Las vegas</h4>
+                                                <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/img/destination-2.jpg" data-lightbox="destination-2"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/img/destination-7.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            
+                                            <h4 class="text-white mb-2 mt-3">Los angelas</h4>
+                                                <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/img/destination-7.jpg" data-lightbox="destination-7"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="~/img/destination-8.jpg" alt="">
+                                        <div class="destination-overlay p-4">
+                                            
+                                            <h4 class="text-white mb-2 mt-3">Los angelas</h4>
+                                                <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="~/img/destination-8.jpg" data-lightbox="destination-8"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="destination-img h-100">
+                                <img class="img-fluid rounded w-100 h-100" src="~/img/destination-9.jpg" style="object-fit: cover; min-height: 300px;" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-9.jpg" data-lightbox="destination-4"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-4.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                   
+                                    <h4 class="text-white mb-2 mt-3">Los angelas</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-4.jpg" data-lightbox="destination-4"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-5.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">Los angelas</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-5.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-6.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">Los angelas</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-6.jpg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-2" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-5.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                   
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-5.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-6.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-6.jpg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-3" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-5.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-5.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-6.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-6.jpg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-4" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-5.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-5.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-6.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                   
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-6.jpg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-5" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-5.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-5.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-6.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-6.jpg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-6" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-5.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                   
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-5.jpg" data-lightbox="destination-5"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="~/img/destination-6.jpg" alt="">
+                                <div class="destination-overlay p-4">
+                                    
+                                    <h4 class="text-white mb-2 mt-3">San francisco</h4>
+                                        <a asp-page="/TourAndService/Index" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="~/img/destination-6.jpg" data-lightbox="destination-6"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Destination End -->
+<!-- Modal -->
+<div id="founderModal" class="modal" tabindex="-1" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">A MESSAGE FROM THE FOUNDER OF VN TOUR LAND</h5>
+                <button type="button" class="btn-close" id="closeFounderModal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><em>Dear Valued Customers and Partners,</em></p>
+                <p>First and foremost, on behalf of the founding team at VN Tour Land, I would like to extend my warmest greetings and sincere gratitude...</p>
+                <p>First and foremost, on behalf of the founding team at VN Tour Land, I would like to extend my warmest greetings and sincere gratitude to all of you for your trust and support throughout our journey.</p>
+
+                <p>VN Tour Land was established with a mission to bring travelers—both from within Vietnam and around the world—personalized, meaningful, and flexible travel experiences across Vietnam. Through our Travel Information Center, you can design your own tour by logging in and selecting your desired destinations, timing, and experiences—tailored exactly to your preferences.</p>
+
+                <p>Alternatively, our team of expert tour designers is always ready to support and advise you, helping to craft memorable journeys that align with your expectations and budget.</p>
+
+                <p>We are committed to delivering the best possible value at the most reasonable cost, and we pride ourselves on listening closely to every customer’s needs. In appreciation of your continued support and referrals, we have implemented a loyalty points system—allowing you to earn rewards, including free trips, once your accumulated points reach your desired milestones.</p>
+
+                <p>Beyond tourism, VN Tour Land is proud to be a founding member of Retirement Village projects—designed to offer ideal, vibrant living environments with a wide range of activities from agriculture to entrepreneurship mentoring. These communities are created to ensure residents feel connected, purposeful, and at home in Vietnam.</p>
+
+                <p>In addition, VN Tour Land is also a co-founder of a coffee franchise and general store chain in Indiana and other states across the U.S., aimed at empowering Vietnamese individuals abroad to own their own businesses with minimal initial investment and full operational support.</p>
+
+                <p>Once again, I would like to express my heartfelt thanks to all of you on behalf of VN Tour Land and our founding shareholders. Your support, trust, and referrals are priceless gifts that inspire us to grow and serve you even better in the future.</p>
+
+                <p>Wishing you continued success, good health, and happiness.</p>
+
+           
+                <p class="mt-4 mb-0"><strong>Tri Nguyen</strong><br>Founder<br>VN TOUR LAND</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Floating Chat Icon Button -->
+<div class="position-fixed bottom-0 end-0 mb-3 me-3">
+    <button id="chatToggleBtn"
+            class="btn btn-primary rounded-circle shadow position-relative"
+            style="width: 60px; height: 60px;"
+            onclick="toggleChatPanel()">
+        <i class="fa fa-comments fs-4"></i>
+    </button>
+</div>
+
+<!-- Floating Chat Panel -->
+<div id="chatBar" class="position-fixed bottom-0 end-0 me-3 mb-3 d-none" style="z-index: 1060;">
+    <div class="card shadow-lg rounded-4 overflow-hidden" style="width: 480px; height: 520px;">
+        <div class="row g-0 h-100">
+            <!-- Customer list -->
+            <div class="col-5 border-end bg-white overflow-auto">
+                <div class="d-flex justify-content-between align-items-center p-3 border-bottom bg-light fw-semibold">
+                    <span id="floatingChatTitle" class="text-truncate">Select a user to start chatting</span>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="hideChatPanel()">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <!-- Customer list -->
+                <div id="chatCustomerList">
+                    @if (Model.ChatCustomers != null && Model.ChatCustomers.Any())
+                    {
+                        foreach (var customer in Model.ChatCustomers)
+                        {
+                            <div onclick="openFloatingChat('@customer.UserName', '@customer.UserId')" class="chat-user-item list-group-item list-group-item-action border-0 text-start py-3 px-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2" style="width: 36px; height: 36px; font-weight: bold;">
+                                        @customer.UserName.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <span>@customer.UserName</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted p-3">No users to chat with yet</div>
+                    }
+                </div>
+            </div>
+
+            <!-- Chat box -->
+            <div class="col-7 d-flex flex-column bg-light position-relative">
+                <!-- Messages -->
+                <div id="floatingChatContent" class="flex-fill overflow-auto p-3" style="font-size: 14px; max-height: 440px;"></div>
+
+                <!-- Chat input area -->
+                <!-- Chat input area -->
+                <div id="floatingChatInputArea" class="border-top p-3 bg-white d-none" style="flex-shrink: 0;">
+                    <form id="chatForm" enctype="multipart/form-data" onsubmit="return sendFloatingMessageWithImage(event)" class="d-flex align-items-center gap-2">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Textarea with padding-right for icons -->
+                        <textarea id="floatingMessageInput"
+                                  class="form-control flex-grow-1"
+                                  placeholder="Type..."
+                                  rows="1"
+                                  style="
+                    resize: none;
+                    min-height: 48px;
+                    max-height: 120px;
+                    padding: 10px 90px 10px 15px;
+                    border-radius: 25px;
+                    box-shadow: 0 0 5px rgb(0 0 0 / 0.1);
+                    border: 1px solid #ccc;
+                    font-size: 15px;
+                    overflow-y: auto;
+                    outline: none;
+                  "></textarea>
+
+                        <!-- Icons container -->
+                        <div style="position: relative; width: 85px; height: 48px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-left: -85px;">
+                            <!-- File upload -->
+                            <label for="floatingImageInput" title="Attach Image" style="cursor: pointer; color: #555;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+                                    <path d="M8.5 1a3.5 3.5 0 0 0-3.5 3.5v7a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 0-1 0v5.5a1.5 1.5 0 0 1-3 0v-7A2.5 2.5 0 0 1 8.5 2h1a.5.5 0 0 0 0-1h-1z" />
+                                </svg>
+                            </label>
+                            <input type="file" id="floatingImageInput" accept="image/*" style="display:none" />
+                            <!-- Send button -->
+                            <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 50%; padding: 0; cursor: pointer;" title="Send Message">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                                    <path d="M15.964 0.686a.5.5 0 0 0-.65-.65L.767 6.767a.5.5 0 0 0-.106.79l6.646 6.646a.5.5 0 0 0 .79-.106l6.853-14.31z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                    <div id="selectedFileName" style="font-size: 12px; color: #555; margin-top: 4px; max-width: 480px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: none;"></div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("founderModal");
+            const openBtn = document.getElementById("founderInlineBtn");
+            const closeBtn = document.getElementById("closeFounderModal");
+
+            openBtn.addEventListener("click", function () {
+                modal.style.display = "block";
+            });
+
+            closeBtn.addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+
+            window.addEventListener("click", function (e) {
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script>
+        let CURRENT_CHAT_CUSTOMER_ID = null;
+        const CURRENT_USER_ID = "@Model.CurrentUserId";
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chathub")
+            .build();
+
+        connection.start()
+            .then(() => console.log("✅ SignalR connected"))
+            .catch(err => console.error("❌ SignalR connection failed:", err));
+
+        connection.on("ReceiveMessage", function (senderId, message) {
+            const align = senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+            const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+            const nameTag = align === 'text-end' ? 'You' : 'Other';
+
+            const chatBar = document.getElementById("chatBar");
+            const chat = document.getElementById("floatingChatContent");
+
+            if (!chatBar.classList.contains("d-none") && CURRENT_CHAT_CUSTOMER_ID === senderId) {
+                chat.innerHTML += `
+                    <div class="${align} mb-2">
+                        <div class="d-inline-block px-3 py-2 rounded ${color}">${nameTag}: ${message}</div>
+                    </div>`;
+                chat.scrollTop = chat.scrollHeight;
+            } else {
+                showFloatingNotification("New message", message);
+                openFloatingChat("Customer", senderId);
+
+                const chatBtn = document.getElementById("chatToggleBtn");
+                if (chatBtn) {
+                    chatBtn.classList.add("animate__animated", "animate__tada");
+                    setTimeout(() => chatBtn.classList.remove("animate__animated", "animate__tada"), 1000);
+                }
+            }
+        });
+
+        connection.on("ReceiveChatUser", function (newUserId) {
+            fetch("/Home/Index?handler=ChatCustomers")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        updateChatCustomerList(data.result);
+                        const newUser = data.result.find(u => u.userId === newUserId);
+                        const name = newUser ? newUser.userName : "Someone";
+                        showFloatingNotification("New chat started", `${name} has just sent you a message.`);
+                    }
+                });
+        });
+
+        function updateChatCustomerList(users) {
+            const container = document.getElementById("chatCustomerList");
+            container.innerHTML = "";
+            if (!users || users.length === 0) {
+                container.innerHTML = `<div class="text-center text-muted p-3">No users to chat with yet</div>`;
+                return;
+            }
+            users.forEach(u => {
+                const initial = u.userName?.charAt(0)?.toUpperCase() || "?";
+                container.innerHTML += `
+                    <div onclick="openFloatingChat('${u.userName}', '${u.userId}')"
+                        class="chat-user-item list-group-item list-group-item-action border-0 text-start py-3 px-3">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2"
+                                style="width: 36px; height: 36px; font-weight: bold;">
+                                ${initial}
+                            </div>
+                            <span>${u.userName}</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function toggleChatPanel() {
+            const panel = document.getElementById("chatBar");
+            const isNowVisible = panel.classList.toggle("d-none");
+            if (!isNowVisible) {
+                const badge = document.getElementById("chatAlertBadge");
+                if (badge) badge.remove();
+            }
+        }
+
+        function hideChatPanel() {
+            document.getElementById("chatBar").classList.add("d-none");
+            closeFloatingChat();
+        }
+
+           async function openFloatingChat(name, customerId) {
+            CURRENT_CHAT_CUSTOMER_ID = customerId;
+            document.getElementById("floatingChatTitle").innerText = name;
+
+            const chat = document.getElementById("floatingChatContent");
+            chat.innerHTML = '<div class="text-muted">Loading messages...</div>';
+
+            try {
+                const res = await fetch(`/Home/Index?handler=Chat&customerId=${customerId}`);
+                const data = await res.json();
+                chat.innerHTML = "";
+
+                if (data.success) {
+                    data.result.forEach(m => {
+                        const align = m.senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+                        const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+                        const nameTag = align === 'text-end' ? 'You' : m.senderName;
+
+                        chat.innerHTML += `<div class="${align} mb-3">`;
+
+                        // Nếu có nội dung văn bản
+                        if (m.content) {
+                            chat.innerHTML += `
+                                <div class="d-inline-block px-3 py-2 rounded ${color}">
+                                    ${nameTag}: ${m.content}
+                                </div>`;
+                        }
+
+                        // Nếu có ảnh
+                        if (m.imageUrl) {
+                            chat.innerHTML += `
+                                <div class="mt-2">
+                                    <img src="${m.imageUrl}" class="img-thumbnail" style="max-width: 220px; border-radius: 10px;" />
+                                </div>`;
+                        }
+
+                        chat.innerHTML += `</div>`;
+                    });
+
+                    chat.scrollTop = chat.scrollHeight;
+                    document.getElementById("floatingChatInputArea")?.classList.remove("d-none");
+                } else {
+                    chat.innerHTML = `<div class="text-danger">${data.message}</div>`;
+                }
+            } catch (e) {
+                chat.innerHTML = `<div class="text-danger">Failed to load chat</div>`;
+            }
+
+            document.getElementById("floatingChat").classList.remove("d-none");
+            document.getElementById("floatingChatInputArea").classList.remove("d-none");
+        }
+
+        function closeFloatingChat() {
+            CURRENT_CHAT_CUSTOMER_ID = null;
+            document.getElementById("floatingChat").classList.add("d-none");
+            document.getElementById("floatingChatInputArea").classList.add("d-none");
+            clearFloatingInput();
+        }
+
+        function clearFloatingInput() {
+            document.getElementById("floatingMessageInput").value = "";
+            document.getElementById("selectedFileName").innerText = "";
+            document.getElementById("floatingImageInput").value = "";
+        }
+
+        async function sendFloatingMessageWithImage(e) {
+            e.preventDefault();
+
+            if (!CURRENT_CHAT_CUSTOMER_ID) {
+                showFloatingNotification("Warning", "Please select a user to chat with first.");
+                return false;
+            }
+
+            const messageInput = document.getElementById("floatingMessageInput");
+            const message = messageInput.value.trim();
+            const fileInput = document.getElementById("floatingImageInput");
+            const file = fileInput.files[0];
+
+            if (!message && !file) {
+                showFloatingNotification("Warning", "Please enter a message or attach an image.");
+                return false;
+            }
+
+            const formData = new FormData();
+            formData.append("CustomerId", CURRENT_CHAT_CUSTOMER_ID);
+            formData.append("Message", message);
+            if (file) formData.append("Image", file);
+
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const res = await fetch("/Home/Index?handler=SendChat", {
+                    method: "POST",
+                    headers: { "RequestVerificationToken": token },
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showFloatingNotification("Success", "Message sent.");
+                    messageInput.value = "";
+                    fileInput.value = "";
+                    document.getElementById("selectedFileName").innerText = "";
+                   appendFloatingMessage(CURRENT_USER_ID, message || "[Image]", data.imageUrl);
+
+                    connection.invoke("SendMessage", CURRENT_CHAT_CUSTOMER_ID, message);
+                } else {
+                    showFloatingNotification("Error", data.message || "Failed to send message.");
+                }
+            } catch (err) {
+                showFloatingNotification("Error", "Failed to send message.");
+            }
+
+            return false;
+        }
+
+               function appendFloatingMessage(senderId, message, imageUrl = null) {
+            const chat = document.getElementById("floatingChatContent");
+            const align = senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+            const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+            const nameTag = align === 'text-end' ? 'You' : 'Other';
+
+            let content = `<div class="${align} mb-2">
+                <div class="d-inline-block px-3 py-2 rounded ${color}">${nameTag}: ${message}</div>
+            </div>`;
+
+            if (imageUrl) {
+                content += `<div class="${align} mb-2">
+                    <img src="${imageUrl}" class="img-thumbnail" style="max-width: 200px;" />
+                </div>`;
+            }
+
+            chat.innerHTML += content;
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+
+        function showFloatingNotification(title, message) {
+            // Xoá toast cũ nếu có
+            const oldToast = document.getElementById("chatToast");
+            if (oldToast) oldToast.remove();
+
+            // Tạo thông báo
+            const toast = document.createElement("div");
+            toast.id = "chatToast";
+            toast.className = "toast align-items-center text-bg-primary border-0 position-fixed bottom-0 end-0 mb-5 me-3 show";
+            toast.style.zIndex = "9999";
+            toast.setAttribute("role", "alert");
+            toast.setAttribute("aria-live", "assertive");
+            toast.setAttribute("aria-atomic", "true");
+
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong>${title}:</strong> ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+
+            document.body.appendChild(toast);
+
+            // 👉 Thêm icon đỏ vào nút chat nếu chưa có
+            const btn = document.getElementById("chatToggleBtn");
+            if (btn && !document.getElementById("chatAlertBadge")) {
+                const badge = document.createElement("span");
+                badge.id = "chatAlertBadge";
+                badge.className = "position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle";
+                badge.style.zIndex = "10001";
+                btn.appendChild(badge);
+            }
+
+            // Ẩn thông báo sau 5s
+            setTimeout(() => {
+                toast.classList.remove("show");
+                toast.remove();
+            }, 5000);
+            }
+
+        // Display selected file name below input
+        document.getElementById("floatingImageInput").addEventListener("change", function () {
+            const fileNameContainer = document.getElementById("selectedFileName");
+            if (this.files.length > 0) {
+                fileNameContainer.innerText = `Selected file: ${this.files[0].name}`;
+            } else {
+                fileNameContainer.innerText = "";
+            }
+        });
+
+        // Auto-grow textarea height on input
+        document.getElementById("floatingMessageInput").addEventListener("input", function () {
+            this.style.height = "auto";
+            this.style.height = (this.scrollHeight) + "px";
+        });
+
+    </script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hiển thị thông báo thành công
+        @if (TempData["Message"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: '@TempData["Message"]'
+                            });
+            </text>
+        }
+
+            // Hiển thị thông báo lỗi
+        @if (TempData["Error"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: '@TempData["Error"]'
+                            });
+            </text>
+        }
+        });
+    </script>
+}
+

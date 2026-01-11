@@ -1,0 +1,146 @@
+﻿@page
+@model VNTourLandProject.Pages.Manage.ManageBlogDetailModel
+@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Thêm Tour Mới";
+}
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="" class="navbar-brand p-0">
+            <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>Travela</h1>
+            <!-- <img src="img/logo.png" alt="Logo"> -->
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a asp-page="/Home/Index" class="nav-item nav-link ">Home</a>
+                <a asp-page="/AboutUs/Index" class="nav-item nav-link ">About</a>
+                <a asp-page="/TourAndService/Index" class="nav-item nav-link ">Tours</a>
+                <a asp-page="/SpecialService/Index" class="nav-item nav-link">Special</a>
+                <a asp-page="/RetirementAndCoffee/Index" class="nav-item nav-link">Project</a>
+                <a asp-page="/NewsAndBlog/Index" class="nav-item nav-link active">Travel Information Center</a>
+                <a asp-page="/ClientsPartners/Index" class="nav-item nav-link">Partners</a>
+                <a asp-page="/Contact/Index" class="nav-item nav-link">Contact</a>
+
+                @* <div class="nav-item dropdown"> *@
+                @*     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a> *@
+                @*     <div class="dropdown-menu m-0"> *@
+                @*         <a href="destination.html" class="dropdown-item">Destination</a> *@
+                @*         <a href="tour.html" class="dropdown-item">Explore Tour</a> *@
+                @*         <a href="booking.html" class="dropdown-item">Travel Booking</a> *@
+                @*         <a href="gallery.html" class="dropdown-item">Our Gallery</a> *@
+                @*         <a href="guides.html" class="dropdown-item">Travel Guides</a> *@
+                @*         <a href="testimonial.html" class="dropdown-item">Testimonial</a> *@
+                @*         <a href="404.html" class="dropdown-item">404 Page</a> *@
+                @*     </div> *@
+                @* </div> *@
+
+            </div>
+            @if (!Model.isAuth)
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">More</a>
+                    <div class="dropdown-menu m-0">
+                        <a asp-page="/Auth/Login" class="dropdown-item">Login</a>
+                        <a asp-page="/Auth/Register" class="dropdown-item">Register</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">
+                        @Model.UserName
+                    </a>
+                    <div class="dropdown-menu m-0">
+                        <a asp-page="/User/Profile" class="dropdown-item">Profile</a>
+                        @if (Model.Role == "MANAGER")
+                        {
+                            <a asp-page="/Manager/Index" class="dropdown-item">Manage</a>
+                        }
+                        <a asp-page="/Auth/Logout" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </nav>
+</div>
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            Our Blog</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item active text-white">Blog</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+<div class="container-fluid py-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 mb-4 min-vh-100">
+            <div class="bg-light rounded shadow-sm p-4 sticky-top" style="top: 90px;">
+                <h5 class="fw-bold mb-3">📚 Quản trị</h5>
+                <div class="list-group">
+                    <a href="/TourManager" class="list-group-item list-group-item-action">🧭 Quản lý Tour</a>
+                    <a href="/BookingManager" class="list-group-item list-group-item-action">📋 Quản lý Booking</a>
+                    <a href="/UserManager" class="list-group-item list-group-item-action">👤 Quản lý User</a>
+                    <a href="/ManageBlog" class="list-group-item list-group-item-action active">📝 Quản lý Blog</a>
+                    <a href="/ManageTransaction" class="list-group-item ">💳 Giao dịch</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <!-- Main Content -->
+        <div class="col-md-9">
+            @if (Model.Blog != null)
+            {
+                <div class="bg-white shadow-sm rounded p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="fw-bold mb-0 text-primary">📝 Chi tiết Bài viết</h3>
+                        <a href="/ManageBlog" class="btn btn-outline-secondary">
+                            <i class="fa fa-arrow-left me-1"></i> Quay lại
+                        </a>
+                    </div>
+
+                    <div class="mb-4">
+                        <img src="@Model.Blog.ImageUrl"
+                             alt="Ảnh bài viết"
+                             class="img-fluid rounded shadow-sm w-100"
+                             style="max-height: 400px; object-fit: cover;" />
+                    </div>
+
+                    <h4 class="fw-semibold mb-3">@Model.Blog.Title</h4>
+
+                    <p class="text-muted mb-4">
+                        <i class="fa fa-calendar-alt text-primary me-1"></i>
+                        @Model.Blog.CreatedDate.ToString("dd MMM yyyy") &nbsp;|&nbsp;
+                        @* <i class="fa fa-comments text-primary me-1"></i> @Model.Blog.CountComment bình luận *@
+                    </p>
+
+                    <div class="blog-content fs-6 lh-lg">
+                        @Html.Raw(Model.Blog.Content)
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    Không tìm thấy bài viết.
+                </div>
+            }
+        </div>
+
+
+
+    </div>
+</div>

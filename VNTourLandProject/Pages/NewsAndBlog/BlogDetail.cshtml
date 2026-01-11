@@ -1,0 +1,330 @@
+﻿@page
+@model VNTourLandProject.Pages.NewsAndBlog.BlogDetailModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Blog Detail";
+}
+
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="" class="navbar-brand p-0">
+            <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>VNTourLand</h1>
+            <!-- <img src="img/logo.png" alt="Logo"> -->
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a asp-page="/Home/Index" class="nav-item nav-link ">Home</a>
+                <a asp-page="/AboutUs/Index" class="nav-item nav-link ">About</a>
+                <a asp-page="/TourAndService/Index" class="nav-item nav-link ">Tours</a>
+                <a asp-page="/SpecialService/Index" class="nav-item nav-link">Special</a>
+                <a asp-page="/RetirementAndCoffee/Index" class="nav-item nav-link">Project</a>
+                <a asp-page="/NewsAndBlog/Index" class="nav-item nav-link active">Travel Information Center</a>
+                <a asp-page="/ClientsPartners/Index" class="nav-item nav-link">Partners</a>
+                <a asp-page="/Contact/Index" class="nav-item nav-link">Contact</a>
+
+               
+
+            </div>
+            @if (!Model.IsAuth)
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">More</a>
+                    <div class="dropdown-menu m-0">
+                        <a asp-page="/Auth/Login" class="dropdown-item">Login</a>
+                        <a asp-page="/Auth/Register" class="dropdown-item">Register</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="nav-item dropdown">
+                    <a href="#" role="button" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4 dropdown-toggle" data-bs-toggle="dropdown">
+                        @Model.UserName
+                    </a>
+                    <div class="dropdown-menu m-0">
+                        <a asp-page="/User/Profile" class="dropdown-item">Profile</a>
+
+                        <a asp-page="/Manager/MyBooking" class="dropdown-item">MyBooking</a>
+                        
+                        <a asp-page="/Auth/Logout" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </nav>
+</div>
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            Our Blog</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Blog</a></li>
+                <li class="breadcrumb-item active text-white">Blog Detail</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+
+<!-- Blog Content -->
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- LEFT CONTENT -->
+        <div class="col-lg-8">
+            @if (Model.BlogDetail != null)
+            {
+                <img src="@Model.BlogDetail.ImageUrl"
+                     class="img-fluid w-100 rounded mb-4 shadow-sm"
+                     style="max-height: 450px; object-fit: cover;"
+                     alt="Blog Image" />
+
+                <h2 class="fw-bold mb-3">@Model.BlogDetail.Title</h2>
+
+                <p class="text-muted mb-3">
+                    <i class="fa fa-calendar-alt text-primary me-2"></i>
+                    @Model.BlogDetail.CreatedDate.ToString("dd MMM yyyy")
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <i class="fa fa-user text-primary me-2"></i>By Admin
+                </p>
+
+                <div class="blog-content fs-5">
+                    @Html.Raw(Model.BlogDetail.Content)
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    Blog not found or has been removed.
+                </div>
+            }
+
+
+            <div class="container py-5">
+                <!-- Tiêu đề -->
+                <div class="mb-4">
+                    <h4 class="fw-bold text-primary">💬 Customer Reviews & Comments</h4>
+                </div>
+
+                <!-- Danh sách bình luận -->
+                <div class="mb-5">
+                    @if (Model.BlogReviews != null && Model.BlogReviews.Any())
+                    {
+                        foreach (var review in Model.BlogReviews)
+                        {
+                            <div class="border-bottom pb-4 mb-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <img src="~/img/user-default.jpg" class="rounded-circle me-3" width="50" height="50" alt="Avatar" />
+                                        <div>
+                                            <strong>@review.Name</strong><br />
+                                            <small class="text-muted">Rate this article</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-warning small">
+                                        @for (int star = 0; star < 5; star++)
+                                        {
+                                            <i class="fas fa-star @(star < review.Rating ? "text-warning" : "text-secondary")"></i>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="mt-3 ps-5">
+                                    <p class="mb-0 text-dark">
+                                        @review.Comment
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No comments yet. Be the first to comment!</p>
+                    }
+                </div>
+
+
+                @if (Model.IsAuth)
+                {
+                    <div class="border p-4 rounded shadow-sm bg-light">
+                        <h5 class="fw-bold mb-3">📝 Send your comment</h5>
+                        <form method="post">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Họ tên" value="@User.Identity.Name" readonly />
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" asp-for="NewReview.Rating" required>
+                                        <option disabled selected>Choose your rating</option>
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <option value="@i">@($"{new string('⭐', i)} ({i} sao)")</option>
+                                        }
+
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <textarea asp-for="NewReview.Comment" rows="4" class="form-control" placeholder="Write a comment..." required></textarea>
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-primary rounded-pill px-4">Send your comment</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning mt-4 text-center" role="alert">
+                        Please <a href="/Login" class="fw-bold text-primary text-decoration-underline">Login</a> to comment and rate this article.
+                    </div>
+                }
+
+            </div>
+
+           
+        </div>
+
+        <!-- RIGHT: SIDEBAR -->
+        <div class="col-lg-4">
+            <h5 class="mb-3 fw-bold">Latest Posts</h5>
+            @foreach (var item in Model.Top3LatestPosts)
+            {
+                <div class="d-flex align-items-center mb-3">
+                    <img src="@item.ImageUrl" class="rounded shadow-sm me-3"
+                         style="width: 80px; height: 80px; object-fit: cover;" />
+                    <div>
+                        <a asp-page="/NewsAndBlog/BlogDetail" asp-route-BlogId="@item.BlogId"
+                           class="text-dark fw-semibold d-block mb-1">
+                            @item.Title
+                        </a>
+                        <small class="text-muted">
+                            <i class="fa fa-calendar-alt me-1"></i>
+                            @item.CreatedDate.ToString("dd MMM yyyy")
+                        </small>
+                    </div>
+                </div>
+            }
+
+            <h5 class="mt-4 mb-3 fw-bold">Categories</h5>
+            <ul class="list-group list-group-flush">
+                @foreach (var cat in Model.Categories)
+                {
+                    <li class="list-group-item px-0">
+                        <a href="#" class="text-dark">
+                            <i class="fa fa-angle-right me-2 text-primary"></i>
+                            @cat.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@* <!-- Floating Chat Icon Button --> *@
+@* <div class="position-fixed bottom-0 end-0 mb-3 me-3"> *@
+@*     <button id="chatToggleBtn" *@
+@*             class="btn btn-primary rounded-circle shadow position-relative" *@
+@*             style="width: 60px; height: 60px;" *@
+@*             onclick="toggleChatPanel()"> *@
+@*         <i class="fa fa-comments fs-4"></i> *@
+@*     </button> *@
+@* </div> *@
+
+@* <!-- Floating Chat Panel --> *@
+@* <div id="chatBar" class="position-fixed bottom-0 end-0 me-3 mb-3 d-none" style="z-index: 1060;"> *@
+@*     <div class="card shadow-lg rounded-4 overflow-hidden" style="width: 480px; height: 520px;"> *@
+@*         <div class="row g-0 h-100"> *@
+@*             <!-- Customer list --> *@
+@*             <div class="col-5 border-end bg-white overflow-auto"> *@
+@*                 <div class="d-flex justify-content-between align-items-center p-3 border-bottom bg-light fw-semibold"> *@
+@*                     <span id="floatingChatTitle" class="text-truncate">Select a user to start chatting</span> *@
+@*                     <button class="btn btn-sm btn-outline-secondary" onclick="hideChatPanel()"> *@
+@*                         <i class="fa fa-times"></i> *@
+@*                     </button> *@
+@*                 </div> *@
+@*                 <!-- Customer list --> *@
+@*                 <div id="chatCustomerList"> *@
+@*                     @if (Model.ChatCustomers != null && Model.ChatCustomers.Any()) *@
+@*                     { *@
+@*                         foreach (var customer in Model.ChatCustomers) *@
+@*                         { *@
+@*                             <div onclick="openFloatingChat('@customer.UserName', '@customer.UserId')" class="chat-user-item list-group-item list-group-item-action border-0 text-start py-3 px-3"> *@
+@*                                 <div class="d-flex align-items-center"> *@
+@*                                     <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2" style="width: 36px; height: 36px; font-weight: bold;"> *@
+@*                                         @customer.UserName.Substring(0, 1).ToUpper() *@
+@*                                     </div> *@
+@*                                     <span>@customer.UserName</span> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                         } *@
+@*                     } *@
+@*                     else *@
+@*                     { *@
+@*                         <div class="text-center text-muted p-3">No users to chat with yet</div> *@
+@*                     } *@
+@*                 </div> *@
+@*             </div> *@
+
+@*             <!-- Chat box --> *@
+@*             <div class="col-7 d-flex flex-column bg-light position-relative"> *@
+@*                 <!-- Messages --> *@
+@*                 <div id="floatingChatContent" class="flex-fill overflow-auto p-3" style="font-size: 14px; max-height: 440px;"></div> *@
+
+@*                 <!-- Chat input area --> *@
+@*                 <!-- Chat input area --> *@
+@*                 <div id="floatingChatInputArea" class="border-top p-3 bg-white d-none" style="flex-shrink: 0;"> *@
+@*                     <form id="chatForm" enctype="multipart/form-data" onsubmit="return sendFloatingMessageWithImage(event)" class="d-flex align-items-center gap-2"> *@
+@*                         @Html.AntiForgeryToken() *@
+
+@*                         <!-- Textarea with padding-right for icons --> *@
+@*                         <textarea id="floatingMessageInput" *@
+@*                                   class="form-control flex-grow-1" *@
+@*                                   placeholder="Type..." *@
+@*                                   rows="1" *@
+@*                                   style=" *@
+@*                     resize: none; *@
+@*                     min-height: 48px; *@
+@*                     max-height: 120px; *@
+@*                     padding: 10px 90px 10px 15px; *@
+@*                     border-radius: 25px; *@
+@*                     box-shadow: 0 0 5px rgb(0 0 0 / 0.1); *@
+@*                     border: 1px solid #ccc; *@
+@*                     font-size: 15px; *@
+@*                     overflow-y: auto; *@
+@*                     outline: none; *@
+@*                   "></textarea> *@
+
+@*                         <!-- Icons container --> *@
+@*                         <div style="position: relative; width: 85px; height: 48px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-left: -85px;"> *@
+@*                             <!-- File upload --> *@
+@*                             <label for="floatingImageInput" title="Attach Image" style="cursor: pointer; color: #555;"> *@
+@*                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16"> *@
+@*                                     <path d="M8.5 1a3.5 3.5 0 0 0-3.5 3.5v7a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 0-1 0v5.5a1.5 1.5 0 0 1-3 0v-7A2.5 2.5 0 0 1 8.5 2h1a.5.5 0 0 0 0-1h-1z" /> *@
+@*                                 </svg> *@
+@*                             </label> *@
+@*                             <input type="file" id="floatingImageInput" accept="image/*" style="display:none" /> *@
+@*                             <!-- Send button --> *@
+@*                             <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 50%; padding: 0; cursor: pointer;" title="Send Message"> *@
+@*                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16"> *@
+@*                                     <path d="M15.964 0.686a.5.5 0 0 0-.65-.65L.767 6.767a.5.5 0 0 0-.106.79l6.646 6.646a.5.5 0 0 0 .79-.106l6.853-14.31z" /> *@
+@*                                 </svg> *@
+@*                             </button> *@
+@*                         </div> *@
+@*                     </form> *@
+@*                     <div id="selectedFileName" style="font-size: 12px; color: #555; margin-top: 4px; max-width: 480px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: none;"></div> *@
+@*                 </div> *@
+
+
+
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@

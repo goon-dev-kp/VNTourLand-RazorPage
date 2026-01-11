@@ -416,3 +416,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+VNTourLandProject/appsettings.Development.json
+VNTourLandProject/appsettings.json
+VNTourLandController/appsettings.json
+VNTourLandController/appsettings.Development.json
+/VNTourLandProject/wwwroot
+/VNTourLandProject/firebase

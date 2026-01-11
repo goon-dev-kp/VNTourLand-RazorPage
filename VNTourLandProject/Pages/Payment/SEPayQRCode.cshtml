@@ -1,0 +1,49 @@
+﻿@page
+@model VNTourLandProject.Pages.Payment.SEPayQRCodeModel
+
+@{
+    ViewData["Title"] = "Pay with SEPay";
+    Layout = "_Layout";
+    var qrImageUrl = Model.QrImageUrl;
+    var amount = Model.Amount;
+    var transactionId = Model.TransactionId;
+}
+
+<div class="flex justify-center items-center min-h-screen bg-gray-50 px-4">
+    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg text-center">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Scan the QR code to make a payment</h2>
+
+        <div class="mb-6">
+            <img src="@qrImageUrl" alt="QR Code" class="mx-auto rounded-lg border-2 border-gray-300" />
+        </div>
+
+        <p class="text-gray-600 text-sm mb-2">Transaction ID: <span class="font-medium">@transactionId</span></p>
+        <p class="text-lg font-semibold text-green-600 mb-4">Amount: @amount.ToString("N0") $</p>
+
+        <div id="countdown" class="text-sm text-gray-500 mb-6">
+            QR code expires in: <span id="timer" class="font-semibold">03:00</span>
+        </div>
+
+        <a asp-page="/Home/Index" class="inline-block px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-sm transition">Back to homepage</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Countdown timer (3 minutes)
+        let seconds = 180;
+        const timerDisplay = document.getElementById("timer");
+
+        const interval = setInterval(() => {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            timerDisplay.textContent = `${m}:${s}`;
+            seconds--;
+
+            if (seconds < 0) {
+                clearInterval(interval);
+                timerDisplay.textContent = "Expired";
+            }
+        }, 1000);
+    </script>
+}

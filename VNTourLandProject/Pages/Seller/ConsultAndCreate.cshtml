@@ -1,0 +1,755 @@
+﻿@page
+@model VNTourLandProject.Pages.Seller.ConsultAndCreateModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Seller Consult-Create";
+}
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            SELLER</h3>
+
+    </div>
+</div>
+<!-- Header End -->
+
+<div class="container-fluid py-5">
+    <div class="row">
+        <!-- SIDEBAR -->
+        <div class="col-md-3 mb-4 min-vh-100">
+            <div class="bg-light rounded shadow-sm p-4 sticky-top" style="top: 90px;">
+                <!-- Logo / Brand -->
+                <a href="/" class="text-decoration-none d-flex align-items-center mb-4">
+                    <i class="fa-solid fa-at"></i>
+                    
+                    <h4 class="m-0 text-dark fw-bold">VNTourLand</h4>
+                </a>
+
+                <!-- Fast Actions -->
+                <h6 class="fw-bold text-uppercase text-muted mb-3">⚙️ Quick Actions</h6>
+                <div class="list-group mb-3">
+
+                    <a asp-page="/Seller/Dashboard" class="list-group-item list-group-item-action">
+                        📊 Dashboard
+                    </a>
+
+                    <a asp-page="/Seller/CustomerRequests" class="list-group-item list-group-item-action active">
+                        👥 Customer Requests
+                    </a>
+
+                    <a asp-page="/Seller/Bookings" class="list-group-item list-group-item-action ">
+                        📝 Manage Bookings
+                    </a>
+
+                    <a asp-page="/Seller/ContactForSeller" class="list-group-item list-group-item-action">
+                        📩 <span class="ms-1">Contact</span>
+                    </a>
+                </div>
+
+                <!-- User Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary w-100 dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        SELLER
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="dropdown-item" asp-page="/User/Profile">👤 Profile</a></li>
+
+                        <li><a class="dropdown-item" asp-page="/Auth/Logout">🚪 Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="mb-4">
+                <h2 class="fw-bold text-primary">➕ Add New Tour</h2>
+                <p class="text-muted">Fill in the full tour information to display it to customers</p>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-sm">
+                <div class="row g-4">
+                    <input type="hidden" name="TourRequest.CustomerId" value="@Model.CustomerId" />
+                    <input type="hidden" name="TourRequest.RequestId" value="@Model.RequestId" />
+
+                    <!-- Tour Name -->
+                    <div class="col-md-6">
+                        <label asp-for="TourRequest.TourName" class="form-label fw-semibold"></label>
+                        <input asp-for="TourRequest.TourName" class="form-control" placeholder="Dalat Tour 3D2N" required />
+                        <span asp-validation-for="TourRequest.TourName" class="text-danger"></span>
+                    </div>
+                    <!-- Location Name -->
+                    <!-- Multiple Locations -->
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Tour Locations</label>
+                        <div id="locationsContainer">
+                            <!-- First location input (initially rendered) -->
+                            <div class="location-group mb-3">
+                                <input type="text" class="form-control locationInput mb-1" placeholder="e.g., Da Lat" required />
+                                <input type="hidden" class="latitudeInput" />
+                                <input type="hidden" class="longitudeInput" />
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-info btn-sm mt-2" onclick="addLocation()">+ Add Another Location</button>
+                    </div>
+
+                    <!-- Start Date -->
+                    <div class="col-md-4">
+                        <label asp-for="TourRequest.StartDate" class="form-label fw-semibold">Start Date</label>
+                        <input asp-for="TourRequest.StartDate" type="date" class="form-control" required />
+                        <span asp-validation-for="TourRequest.StartDate" class="text-danger"></span>
+                    </div>
+                    <!-- End Date -->
+                    <div class="col-md-4">
+                        <label asp-for="TourRequest.EndDate" class="form-label fw-semibold">End Date</label>
+                        <input asp-for="TourRequest.EndDate" type="date" class="form-control" required />
+                        <span asp-validation-for="TourRequest.EndDate" class="text-danger"></span>
+                    </div>
+                    <!-- Available Slots -->
+                   
+
+                    <!-- Adult Price -->
+                    <div class="col-md-6">
+                        <label asp-for="TourRequest.PriceOfAdult" class="form-label fw-semibold">Adult Price</label>
+                        <input asp-for="TourRequest.PriceOfAdult" type="number" class="form-control" placeholder="3500000" required />
+                        <span asp-validation-for="TourRequest.PriceOfAdult" class="text-danger"></span>
+                    </div>
+                    <!-- Child Price -->
+                    <div class="col-md-6">
+                        <label asp-for="TourRequest.PriceOfChild" class="form-label fw-semibold">Child Price</label>
+                        <input asp-for="TourRequest.PriceOfChild" type="number" class="form-control" placeholder="2500000" required />
+                        <span asp-validation-for="TourRequest.PriceOfChild" class="text-danger"></span>
+                    </div>
+
+                    <!-- Tour Description -->
+                    <div class="col-md-12">
+                        <label asp-for="TourRequest.TourDescription" class="form-label fw-semibold"></label>
+                        <textarea asp-for="TourRequest.TourDescription" rows="4" class="form-control" placeholder="Tour introduction, itinerary, highlights..." required></textarea>
+                        <span asp-validation-for="TourRequest.TourDescription" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="TourRequest.Image" class="form-label fw-semibold">Tour Thumbnail</label>
+                        <input asp-for="TourRequest.Image" type="file" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="TourRequest.Type" class="form-label fw-semibold">Tour Type</label>
+                        <select asp-for="TourRequest.Type" class="form-select">
+                            <option value="">-- Select Tour Type --</option>
+                            <option value="INBOUND">Domestic Tour (Inbound)</option>
+                            <option value="OUTBOUND">International Tour (Outbound)</option>
+                            <option value="MICE">MICE Tour</option>
+
+                            <!-- Inbound Regions -->
+                            <option value="INBOUND_MIEN_BAC">Inbound - Miền Bắc</option>
+                            <option value="INBOUND_MIEN_TRUNG">Inbound - Miền Trung</option>
+                            <option value="INBOUND_MIEN_TAY">Inbound - Miền Tây</option>
+                            <option value="INBOUND_MIEN_BIEN">Inbound - Miền Biển</option>
+                            <option value="INBOUND_MIEN_NUI">Inbound - Miền Núi</option>
+
+                            <!-- Thematic Tours -->
+                            <option value="THEME_HONEYMOON">Theme - Honeymoon</option>
+                            <option value="THEME_CHU_DE">Theme - Chủ Đề Đặc Biệt</option>
+                            <option value="THEME_LICH_SU">Theme - Lịch Sử</option>
+                            <option value="THEME_XUYEN_VIET">Theme - Xuyên Việt</option>
+
+
+                        </select>
+                    </div>
+
+                    <!-- Included Items -->
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Included Items</label>
+                        <div id="included-container"></div>
+                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addIncluded()">+ Add</button>
+                    </div>
+
+                    <!-- Not Included Items -->
+                    <div class="col-12 mt-3">
+                        <label class="form-label fw-semibold">Not Included Items</label>
+                        <div id="notincluded-container"></div>
+                        <button type="button" class="btn btn-outline-danger btn-sm mt-2" onclick="addNotIncluded()">+ Add</button>
+                    </div>
+
+                    <!-- Custom Add-on Note -->
+                    <div class="col-md-12 mt-3">
+                        <label asp-for="TourRequest.CustomAddOnNote" class="form-label fw-semibold">Custom Add-on Notes</label>
+                        <textarea asp-for="TourRequest.CustomAddOnNote" rows="3" class="form-control" placeholder="E.g., Requesting vegetarian meals, private transportation..."></textarea>
+                        <span asp-validation-for="TourRequest.CustomAddOnNote" class="text-danger"></span>
+                    </div>
+
+                    <!-- Custom Add-on Fee -->
+                    <div class="col-md-6">
+                        <label asp-for="TourRequest.CustomAddOnFee" class="form-label fw-semibold">Custom Add-on Fee (USD)</label>
+                        <input asp-for="TourRequest.CustomAddOnFee" type="number" class="form-control" placeholder="e.g., 50" step="0.01" min="0" />
+                        <span asp-validation-for="TourRequest.CustomAddOnFee" class="text-danger"></span>
+                    </div>
+
+
+
+                   
+                    <!-- Itinerary & Activities -->
+                    <div class="col-12 mt-4">
+                        <label class="form-label fw-semibold">Itinerary</label>
+                        <div id="itinerary-container"></div>
+                        <button type="button" class="btn btn-outline-success btn-sm mt-2" onclick="addItinerary()">+ Add Itinerary</button>
+                    </div>
+
+                    <div class="col-12 text-end mt-3">
+                        <a asp-page="/Seller/CustomerRequest" class="btn btn-outline-dark me-2 rounded-pill px-4 shadow-sm">
+                            ⬅ Back to Requests
+                        </a>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            💾 Save Tour
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Floating Chat Icon Button -->
+<div class="position-fixed bottom-0 end-0 mb-3 me-3">
+    <button id="chatToggleBtn"
+            class="btn btn-primary rounded-circle shadow position-relative"
+            style="width: 60px; height: 60px;"
+            onclick="toggleChatPanel()">
+        <i class="fa fa-comments fs-4"></i>
+    </button>
+</div>
+
+<!-- Floating Chat Panel -->
+<div id="chatBar" class="position-fixed bottom-0 end-0 me-3 mb-3 d-none" style="z-index: 1060;">
+    <div class="card shadow-lg rounded-4 overflow-hidden" style="width: 480px; height: 520px;">
+        <div class="row g-0 h-100">
+            <!-- Customer list -->
+            <div class="col-5 border-end bg-white overflow-auto">
+                <div class="d-flex justify-content-between align-items-center p-3 border-bottom bg-light fw-semibold">
+                    <span id="floatingChatTitle" class="text-truncate">Select a user to start chatting</span>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="hideChatPanel()">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <!-- Customer list -->
+                <div id="chatCustomerList">
+                    @if (Model.ChatCustomers != null && Model.ChatCustomers.Any())
+                    {
+                        foreach (var customer in Model.ChatCustomers)
+                        {
+                            <div onclick="openFloatingChat('@customer.UserName', '@customer.UserId')" class="chat-user-item list-group-item list-group-item-action border-0 text-start py-3 px-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2" style="width: 36px; height: 36px; font-weight: bold;">
+                                        @customer.UserName.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <span>@customer.UserName</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted p-3">No users to chat with yet</div>
+                    }
+                </div>
+            </div>
+
+            <!-- Chat box -->
+            <div class="col-7 d-flex flex-column bg-light position-relative">
+                <!-- Messages -->
+                <div id="floatingChatContent" class="flex-fill overflow-auto p-3" style="font-size: 14px; max-height: 440px;"></div>
+
+                <!-- Chat input area -->
+                <!-- Chat input area -->
+                <div id="floatingChatInputArea" class="border-top p-3 bg-white d-none" style="flex-shrink: 0;">
+                    <form id="chatForm" enctype="multipart/form-data" onsubmit="return sendFloatingMessageWithImage(event)" class="d-flex align-items-center gap-2">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Textarea with padding-right for icons -->
+                        <textarea id="floatingMessageInput"
+                                  class="form-control flex-grow-1"
+                                  placeholder="Type..."
+                                  rows="1"
+                                  style="
+                    resize: none;
+                    min-height: 48px;
+                    max-height: 120px;
+                    padding: 10px 90px 10px 15px;
+                    border-radius: 25px;
+                    box-shadow: 0 0 5px rgb(0 0 0 / 0.1);
+                    border: 1px solid #ccc;
+                    font-size: 15px;
+                    overflow-y: auto;
+                    outline: none;
+                  "></textarea>
+
+                        <!-- Icons container -->
+                        <div style="position: relative; width: 85px; height: 48px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-left: -85px;">
+                            <!-- File upload -->
+                            <label for="floatingImageInput" title="Attach Image" style="cursor: pointer; color: #555;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+                                    <path d="M8.5 1a3.5 3.5 0 0 0-3.5 3.5v7a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 0-1 0v5.5a1.5 1.5 0 0 1-3 0v-7A2.5 2.5 0 0 1 8.5 2h1a.5.5 0 0 0 0-1h-1z" />
+                                </svg>
+                            </label>
+                            <input type="file" id="floatingImageInput" accept="image/*" style="display:none" />
+                            <!-- Send button -->
+                            <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 50%; padding: 0; cursor: pointer;" title="Send Message">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                                    <path d="M15.964 0.686a.5.5 0 0 0-.65-.65L.767 6.767a.5.5 0 0 0-.106.79l6.646 6.646a.5.5 0 0 0 .79-.106l6.853-14.31z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                    <div id="selectedFileName" style="font-size: 12px; color: #555; margin-top: 4px; max-width: 480px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: none;"></div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script>
+        let CURRENT_CHAT_CUSTOMER_ID = null;
+        const CURRENT_USER_ID = "@Model.CurrentUserId";
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chathub")
+            .build();
+
+        connection.start()
+            .then(() => console.log("✅ SignalR connected"))
+            .catch(err => console.error("❌ SignalR connection failed:", err));
+
+        connection.on("ReceiveMessage", function (senderId, message) {
+            const align = senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+            const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+            const nameTag = align === 'text-end' ? 'You' : 'Other';
+
+            const chatBar = document.getElementById("chatBar");
+            const chat = document.getElementById("floatingChatContent");
+
+            if (!chatBar.classList.contains("d-none") && CURRENT_CHAT_CUSTOMER_ID === senderId) {
+                chat.innerHTML += `
+                    <div class="${align} mb-2">
+                        <div class="d-inline-block px-3 py-2 rounded ${color}">${nameTag}: ${message}</div>
+                    </div>`;
+                chat.scrollTop = chat.scrollHeight;
+            } else {
+                showFloatingNotification("New message", message);
+                openFloatingChat("Customer", senderId);
+
+                const chatBtn = document.getElementById("chatToggleBtn");
+                if (chatBtn) {
+                    chatBtn.classList.add("animate__animated", "animate__tada");
+                    setTimeout(() => chatBtn.classList.remove("animate__animated", "animate__tada"), 1000);
+                }
+            }
+        });
+
+        connection.on("ReceiveChatUser", function (newUserId) {
+            fetch("/Seller/ConsultAndCreate?handler=ChatCustomers")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        updateChatCustomerList(data.result);
+                        const newUser = data.result.find(u => u.userId === newUserId);
+                        const name = newUser ? newUser.userName : "Someone";
+                        showFloatingNotification("New chat started", `${name} has just sent you a message.`);
+                    }
+                });
+        });
+
+        function updateChatCustomerList(users) {
+            const container = document.getElementById("chatCustomerList");
+            container.innerHTML = "";
+            if (!users || users.length === 0) {
+                container.innerHTML = `<div class="text-center text-muted p-3">No users to chat with yet</div>`;
+                return;
+            }
+            users.forEach(u => {
+                const initial = u.userName?.charAt(0)?.toUpperCase() || "?";
+                container.innerHTML += `
+                    <div onclick="openFloatingChat('${u.userName}', '${u.userId}')"
+                        class="chat-user-item list-group-item list-group-item-action border-0 text-start py-3 px-3">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2"
+                                style="width: 36px; height: 36px; font-weight: bold;">
+                                ${initial}
+                            </div>
+                            <span>${u.userName}</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function toggleChatPanel() {
+            const panel = document.getElementById("chatBar");
+            const isNowVisible = panel.classList.toggle("d-none");
+            if (!isNowVisible) {
+                const badge = document.getElementById("chatAlertBadge");
+                if (badge) badge.remove();
+            }
+        }
+
+        function hideChatPanel() {
+            document.getElementById("chatBar").classList.add("d-none");
+            closeFloatingChat();
+        }
+
+        async function openFloatingChat(name, customerId) {
+             CURRENT_CHAT_CUSTOMER_ID = customerId;
+             document.getElementById("floatingChatTitle").innerText = name;
+
+             const chat = document.getElementById("floatingChatContent");
+             chat.innerHTML = '<div class="text-muted">Loading messages...</div>';
+
+             try {
+                 const res = await fetch(`/Seller/ConsultAndCreate?handler=Chat&customerId=${customerId}`);
+                 const data = await res.json();
+                 chat.innerHTML = "";
+
+                 if (data.success) {
+                     data.result.forEach(m => {
+                         const align = m.senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+                         const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+                         const nameTag = align === 'text-end' ? 'You' : m.senderName;
+
+                         chat.innerHTML += `<div class="${align} mb-3">`;
+
+                         // Nếu có nội dung văn bản
+                         if (m.content) {
+                             chat.innerHTML += `
+                                 <div class="d-inline-block px-3 py-2 rounded ${color}">
+                                     ${nameTag}: ${m.content}
+                                 </div>`;
+                         }
+
+                         // Nếu có ảnh
+                         if (m.imageUrl) {
+                             chat.innerHTML += `
+                                 <div class="mt-2">
+                                     <img src="${m.imageUrl}" class="img-thumbnail" style="max-width: 220px; border-radius: 10px;" />
+                                 </div>`;
+                         }
+
+                         chat.innerHTML += `</div>`;
+                     });
+
+                     chat.scrollTop = chat.scrollHeight;
+                     document.getElementById("floatingChatInputArea")?.classList.remove("d-none");
+                 } else {
+                     chat.innerHTML = `<div class="text-danger">${data.message}</div>`;
+                 }
+             } catch (e) {
+                 chat.innerHTML = `<div class="text-danger">Failed to load chat</div>`;
+             }
+
+             document.getElementById("floatingChat").classList.remove("d-none");
+             document.getElementById("floatingChatInputArea").classList.remove("d-none");
+         }
+
+        function closeFloatingChat() {
+            CURRENT_CHAT_CUSTOMER_ID = null;
+            document.getElementById("floatingChat").classList.add("d-none");
+            document.getElementById("floatingChatInputArea").classList.add("d-none");
+            clearFloatingInput();
+        }
+
+        function clearFloatingInput() {
+            document.getElementById("floatingMessageInput").value = "";
+            document.getElementById("selectedFileName").innerText = "";
+            document.getElementById("floatingImageInput").value = "";
+        }
+
+        async function sendFloatingMessageWithImage(e) {
+            e.preventDefault();
+
+            if (!CURRENT_CHAT_CUSTOMER_ID) {
+                showFloatingNotification("Warning", "Please select a user to chat with first.");
+                return false;
+            }
+
+            const messageInput = document.getElementById("floatingMessageInput");
+            const message = messageInput.value.trim();
+            const fileInput = document.getElementById("floatingImageInput");
+            const file = fileInput.files[0];
+
+            if (!message && !file) {
+                showFloatingNotification("Warning", "Please enter a message or attach an image.");
+                return false;
+            }
+
+            const formData = new FormData();
+            formData.append("CustomerId", CURRENT_CHAT_CUSTOMER_ID);
+            formData.append("Message", message);
+            if (file) formData.append("Image", file);
+
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const res = await fetch("/Seller/ConsultAndCreate?handler=SendChat", {
+                    method: "POST",
+                    headers: { "RequestVerificationToken": token },
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showFloatingNotification("Success", "Message sent.");
+                    messageInput.value = "";
+                    fileInput.value = "";
+                    document.getElementById("selectedFileName").innerText = "";
+                   appendFloatingMessage(CURRENT_USER_ID, message || "[Image]", data.imageUrl);
+
+                    connection.invoke("SendMessage", CURRENT_CHAT_CUSTOMER_ID, message);
+                } else {
+                    showFloatingNotification("Error", data.message || "Failed to send message.");
+                }
+            } catch (err) {
+                showFloatingNotification("Error", "Failed to send message.");
+            }
+
+            return false;
+        }
+
+               function appendFloatingMessage(senderId, message, imageUrl = null) {
+            const chat = document.getElementById("floatingChatContent");
+            const align = senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+            const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+            const nameTag = align === 'text-end' ? 'You' : 'Other';
+
+            let content = `<div class="${align} mb-2">
+                <div class="d-inline-block px-3 py-2 rounded ${color}">${nameTag}: ${message}</div>
+            </div>`;
+
+            if (imageUrl) {
+                content += `<div class="${align} mb-2">
+                    <img src="${imageUrl}" class="img-thumbnail" style="max-width: 200px;" />
+                </div>`;
+            }
+
+            chat.innerHTML += content;
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+
+        function showFloatingNotification(title, message) {
+            // Xoá toast cũ nếu có
+            const oldToast = document.getElementById("chatToast");
+            if (oldToast) oldToast.remove();
+
+            // Tạo thông báo
+            const toast = document.createElement("div");
+            toast.id = "chatToast";
+            toast.className = "toast align-items-center text-bg-primary border-0 position-fixed bottom-0 end-0 mb-5 me-3 show";
+            toast.style.zIndex = "9999";
+            toast.setAttribute("role", "alert");
+            toast.setAttribute("aria-live", "assertive");
+            toast.setAttribute("aria-atomic", "true");
+
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong>${title}:</strong> ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+
+            document.body.appendChild(toast);
+
+            // 👉 Thêm icon đỏ vào nút chat nếu chưa có
+            const btn = document.getElementById("chatToggleBtn");
+            if (btn && !document.getElementById("chatAlertBadge")) {
+                const badge = document.createElement("span");
+                badge.id = "chatAlertBadge";
+                badge.className = "position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle";
+                badge.style.zIndex = "10001";
+                btn.appendChild(badge);
+            }
+
+            // Ẩn thông báo sau 5s
+            setTimeout(() => {
+                toast.classList.remove("show");
+                toast.remove();
+            }, 5000);
+            }
+
+        // Display selected file name below input
+        document.getElementById("floatingImageInput").addEventListener("change", function () {
+            const fileNameContainer = document.getElementById("selectedFileName");
+            if (this.files.length > 0) {
+                fileNameContainer.innerText = `Selected file: ${this.files[0].name}`;
+            } else {
+                fileNameContainer.innerText = "";
+            }
+        });
+
+        // Auto-grow textarea height on input
+        document.getElementById("floatingMessageInput").addEventListener("input", function () {
+            this.style.height = "auto";
+            this.style.height = (this.scrollHeight) + "px";
+        });
+
+    </script>
+
+    <script>
+        function addIncluded() {
+            const container = document.getElementById('included-container');
+            const index = container.children.length;
+            container.insertAdjacentHTML('beforeend', `
+                <input name="TourRequest.IncludedItems[${index}]" class="form-control mb-2"
+                       placeholder="e.g. Breakfast, entrance ticket..." required
+                       oninvalid="this.setCustomValidity('Please enter an included item')"
+                       oninput="this.setCustomValidity('')" />
+            `);
+        }
+
+        function addNotIncluded() {
+            const container = document.getElementById('notincluded-container');
+            const index = container.children.length;
+            container.insertAdjacentHTML('beforeend', `
+                <input name="TourRequest.NotIncludedItems[${index}]" class="form-control mb-2"
+                       placeholder="e.g. Personal expenses..." required
+                       oninvalid="this.setCustomValidity('Please enter a not included item')"
+                       oninput="this.setCustomValidity('')" />
+            `);
+        }
+
+        let itineraryIndex = 0;
+        function addItinerary() {
+            const container = document.getElementById('itinerary-container');
+            const current = itineraryIndex++;
+            container.insertAdjacentHTML('beforeend', `
+            <div class="border rounded p-3 mb-3">
+                <h5>Itinerary #${current + 1}</h5>
+
+                <input name="TourRequest.Itineraries[${current}].Name" class="form-control mb-2"
+                       placeholder="Itinerary name" required
+                       oninvalid="this.setCustomValidity('Please enter itinerary name')"
+                       oninput="this.setCustomValidity('')" />
+
+
+
+                <input name="TourRequest.Itineraries[${current}].StartTime" type="datetime-local" class="form-control mb-2"
+                       required oninvalid="this.setCustomValidity('Please select start time')"
+                       oninput="this.setCustomValidity('')" />
+
+                <input name="TourRequest.Itineraries[${current}].EndTime" type="datetime-local" class="form-control mb-2"
+                       required oninvalid="this.setCustomValidity('Please select end time')"
+                       oninput="this.setCustomValidity('')" />
+
+                <div id="activity-container-${current}" class="ps-3"></div>
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addActivity(${current})">+ Add Activity</button>
+            </div>`);
+        }
+
+        function addActivity(itineraryIdx) {
+            const container = document.getElementById(`activity-container-${itineraryIdx}`);
+            const index = container.children.length;
+            container.insertAdjacentHTML('beforeend', `
+            <div class="border-start ps-3 mb-2">
+                <input name="TourRequest.Itineraries[${itineraryIdx}].Activities[${index}].Description" class="form-control mb-1"
+                       placeholder="Activity description" required
+                       oninvalid="this.setCustomValidity('Please describe the activity')"
+                       oninput="this.setCustomValidity('')" />
+
+                <input name="TourRequest.Itineraries[${itineraryIdx}].Activities[${index}].StartTime" type="datetime-local" class="form-control mb-1"
+                       required oninvalid="this.setCustomValidity('Please select activity start time')"
+                       oninput="this.setCustomValidity('')" />
+
+                <input name="TourRequest.Itineraries[${itineraryIdx}].Activities[${index}].EndTime" type="datetime-local" class="form-control mb-1"
+                       required oninvalid="this.setCustomValidity('Please select activity end time')"
+                       oninput="this.setCustomValidity('')" />
+            </div>`);
+        }
+    </script>
+
+    <script>
+        const accessToken = '@Model.MapboxToken'; // hoặc hard-code test
+
+        // Lấy tọa độ khi blur location input
+        document.addEventListener('blur', async function (e) {
+            if (e.target.classList.contains('locationInput')) {
+                const location = e.target.value;
+                if (!location) return;
+
+                const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(location)}.json?access_token=${accessToken}`);
+                const data = await response.json();
+
+                if (data.features?.length > 0) {
+                    const center = data.features[0].center;
+                    const group = e.target.closest('.location-group');
+                    group.querySelector('.latitudeInput').value = center[1];
+                    group.querySelector('.longitudeInput').value = center[0];
+                }
+            }
+        }, true);
+
+        // Thêm ô nhập địa điểm mới
+        function addLocation() {
+            const container = document.getElementById('locationsContainer');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'location-group mb-3';
+            newGroup.innerHTML = `
+                <input type="text" class="form-control locationInput mb-1" placeholder="e.g., Ha Long Bay" required />
+                <input type="hidden" class="latitudeInput" />
+                <input type="hidden" class="longitudeInput" />
+            `;
+            container.appendChild(newGroup);
+        }
+
+        // Gán name động cho các inputs trước khi submit
+        document.querySelector('form').addEventListener('submit', function () {
+            const groups = document.querySelectorAll('.location-group');
+            groups.forEach((group, index) => {
+                group.querySelector('.locationInput').setAttribute('name', `TourRequest.Locations[${index}].LocationName`);
+                group.querySelector('.latitudeInput').setAttribute('name', `TourRequest.Locations[${index}].Latitude`);
+                group.querySelector('.longitudeInput').setAttribute('name', `TourRequest.Locations[${index}].Longitude`);
+            });
+        });
+    </script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hiển thị thông báo thành công
+        @if (TempData["Message"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: '@TempData["Message"]'
+                            });
+            </text>
+        }
+
+            // Hiển thị thông báo lỗi
+        @if (TempData["Error"] != null)
+        {
+            <text>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: '@TempData["Error"]'
+                            });
+            </text>
+        }
+        });
+    </script>
+}
+
+
+

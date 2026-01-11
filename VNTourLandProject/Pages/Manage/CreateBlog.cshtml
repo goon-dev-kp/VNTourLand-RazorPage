@@ -1,0 +1,343 @@
+﻿@page
+@model VNTourLandProject.Pages.Manage.CreateBlogModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Thêm Tour Mới";
+}
+
+
+
+
+
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            MANAGER
+        </h3>
+    </div>
+</div>
+<!-- Header End -->
+
+<div class="container-fluid py-5">
+    <div class="row">
+        <!-- SIDEBAR -->
+        <div class="col-md-3 mb-4 min-vh-100">
+            <div class="bg-light rounded shadow-sm p-4 sticky-top" style="top: 90px;">
+                <!-- Logo / Brand -->
+                <a href="/" class="text-decoration-none d-flex align-items-center mb-4">
+                    <i class="fa fa-map-marker-alt fa-2x text-primary me-2"></i>
+                    <h4 class="m-0 text-dark fw-bold">VNTourLand</h4>
+                </a>
+
+                <!-- Fast Actions -->
+                <h6 class="fw-bold text-uppercase text-muted mb-3">⚙️ Quick Actions</h6>
+                <div class="list-group mb-3">
+                    <a asp-page="/Manage/ManageTour" class="list-group-item list-group-item-action">
+                        🧭 Manage Tours
+                    </a>
+                    <a asp-page="/Manage/ManageUser" class="list-group-item list-group-item-action">
+                        👤 Manage Users
+                    </a>
+                    <a asp-page="/Manage/ManageBooking" class="list-group-item list-group-item-action">
+                        📋 Manage Bookings
+                    </a>
+                    <a asp-page="/Manage/ManageStory" class="list-group-item list-group-item-action active">
+                        💬 Manage Stories
+                    </a>
+                    <a asp-page="/Manage/ManageTransaction" class="list-group-item list-group-item-action">
+                        💳 Transactions
+                    </a>
+                </div>
+
+                <!-- User Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary w-100 dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        MANAGER
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        @* <li><a class="dropdown-item" asp-page="/User/Profile">👤 Profile</a></li> *@
+                        <li><a class="dropdown-item" asp-page="/Auth/Logout">🚪 Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- FORM BÊN PHẢI -->
+        <div class="col-md-9">
+            <div class="mb-4">
+                <h2 class="fw-bold text-primary">➕ Thêm Bài viết Blog</h2>
+                <p class="text-muted">Chia sẻ những kinh nghiệm, thông tin và điểm đến du lịch hấp dẫn</p>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-sm">
+                <div class="row g-4">
+                    <div class="col-md-8">
+                        <label class="form-label fw-semibold">Tiêu đề bài viết</label>
+                        <input asp-for="CreateBlogDTO.Title" class="form-control" placeholder="10 địa điểm nên đến trong hè" required />
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label fw-semibold">Hình đại diện</label>
+                        <input asp-for="CreateBlogDTO.ImageFile" type="file" class="form-control" />
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label fw-semibold">Nội dung</label>
+                        <textarea asp-for="CreateBlogDTO.Content" class="form-control" rows="8" placeholder="Viết nội dung bài viết..." required></textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label fw-semibold">Thể loại</label>
+                        <select asp-for="CreateBlogDTO.BlogCategoryId" class="form-select" required>
+                            <option value="">-- Chọn thể loại --</option>
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <option value="@cat.CategoryId">@cat.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-12 text-end mt-3">
+                        <a asp-page="/Manage/ManageBlog" class="btn btn-outline-secondary me-2">Quay lại</a>
+                        <button type="submit" class="btn btn-primary">Đăng bài</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script>
+        let CURRENT_CHAT_CUSTOMER_ID = null;
+        const CURRENT_USER_ID = "@Model.CurrentUserId";
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chathub")
+            .build();
+
+        connection.start()
+            .then(() => console.log("✅ SignalR connected"))
+            .catch(err => console.error("❌ SignalR connection failed:", err));
+
+        connection.on("ReceiveMessage", function (senderId, message) {
+            const align = senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+            const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+            const nameTag = align === 'text-end' ? 'You' : 'Other';
+
+            const chatBar = document.getElementById("chatBar");
+            const chat = document.getElementById("floatingChatContent");
+
+            if (!chatBar.classList.contains("d-none") && CURRENT_CHAT_CUSTOMER_ID === senderId) {
+                chat.innerHTML += `
+                    <div class="${align} mb-2">
+                        <div class="d-inline-block px-3 py-2 rounded ${color}">${nameTag}: ${message}</div>
+                    </div>`;
+                chat.scrollTop = chat.scrollHeight;
+            } else {
+                showFloatingNotification("New message", message);
+                openFloatingChat("Customer", senderId);
+
+                const chatBtn = document.getElementById("chatToggleBtn");
+                if (chatBtn) {
+                    chatBtn.classList.add("animate__animated", "animate__tada");
+                    setTimeout(() => chatBtn.classList.remove("animate__animated", "animate__tada"), 1000);
+                }
+            }
+        });
+
+        connection.on("ReceiveChatUser", function (newUserId) {
+            fetch("/Home/Index?handler=ChatCustomers")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        updateChatCustomerList(data.result);
+                        const newUser = data.result.find(u => u.userId === newUserId);
+                        const name = newUser ? newUser.userName : "Someone";
+                        showFloatingNotification("New chat started", `${name} has just sent you a message.`);
+                    }
+                });
+        });
+
+        function updateChatCustomerList(users) {
+            const container = document.getElementById("chatCustomerList");
+            container.innerHTML = "";
+            if (!users || users.length === 0) {
+                container.innerHTML = `<div class="text-center text-muted p-3">No users to chat with yet</div>`;
+                return;
+            }
+            users.forEach(u => {
+                const initial = u.userName?.charAt(0)?.toUpperCase() || "?";
+                container.innerHTML += `
+                    <div onclick="openFloatingChat('${u.userName}', '${u.userId}')"
+                        class="chat-user-item list-group-item list-group-item-action border-0 text-start py-3 px-3">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2"
+                                style="width: 36px; height: 36px; font-weight: bold;">
+                                ${initial}
+                            </div>
+                            <span>${u.userName}</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function toggleChatPanel() {
+            const panel = document.getElementById("chatBar");
+            const isNowVisible = panel.classList.toggle("d-none");
+            if (!isNowVisible) {
+                const badge = document.getElementById("chatAlertBadge");
+                if (badge) badge.remove();
+            }
+        }
+
+        function hideChatPanel() {
+            document.getElementById("chatBar").classList.add("d-none");
+            closeFloatingChat();
+        }
+
+        async function openFloatingChat(name, customerId) {
+            CURRENT_CHAT_CUSTOMER_ID = customerId;
+            document.getElementById("floatingChatTitle").innerText = name;
+
+            const chat = document.getElementById("floatingChatContent");
+            chat.innerHTML = '<div class="text-muted">Loading messages...</div>';
+
+            try {
+                const res = await fetch(`/Home/Index?handler=Chat&customerId=${customerId}`);
+                const data = await res.json();
+                chat.innerHTML = "";
+
+                if (data.success) {
+                    data.result.forEach(m => {
+                        const align = m.senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+                        const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+                        const nameTag = align === 'text-end' ? 'You' : m.senderName;
+
+                        chat.innerHTML += `<div class="${align} mb-2">
+                            <div class="d-inline-block px-3 py-2 rounded ${color}">${nameTag}: ${m.content}</div>
+                        </div>`;
+                    });
+                    chat.scrollTop = chat.scrollHeight;
+                    document.getElementById("floatingChatInputArea")?.classList.remove("d-none");
+                } else {
+                    chat.innerHTML = `<div class="text-danger">${data.message}</div>`;
+                }
+            } catch (e) {
+                chat.innerHTML = `<div class="text-danger">Failed to load chat</div>`;
+            }
+
+            document.getElementById("floatingChat").classList.remove("d-none");
+            document.getElementById("floatingChatInputArea").classList.remove("d-none");
+        }
+
+        function closeFloatingChat() {
+            CURRENT_CHAT_CUSTOMER_ID = null;
+            document.getElementById("floatingChat").classList.add("d-none");
+            document.getElementById("floatingChatInputArea").classList.add("d-none");
+            clearFloatingInput();
+        }
+
+        function clearFloatingInput() {
+            document.getElementById("floatingMessageInput").value = "";
+            document.getElementById("selectedFileName").innerText = "";
+            document.getElementById("floatingImageInput").value = "";
+        }
+
+        async function sendFloatingMessageWithImage(e) {
+            e.preventDefault();
+
+            if (!CURRENT_CHAT_CUSTOMER_ID) {
+                showFloatingNotification("Warning", "Please select a user to chat with first.");
+                return false;
+            }
+
+            const messageInput = document.getElementById("floatingMessageInput");
+            const message = messageInput.value.trim();
+            const fileInput = document.getElementById("floatingImageInput");
+            const file = fileInput.files[0];
+
+            if (!message && !file) {
+                showFloatingNotification("Warning", "Please enter a message or attach an image.");
+                return false;
+            }
+
+            const formData = new FormData();
+            formData.append("CustomerId", CURRENT_CHAT_CUSTOMER_ID);
+            formData.append("Message", message);
+            if (file) formData.append("Image", file);
+
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                const res = await fetch("/Home/Index?handler=SendChat", {
+                    method: "POST",
+                    headers: { "RequestVerificationToken": token },
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showFloatingNotification("Success", "Message sent.");
+                    messageInput.value = "";
+                    fileInput.value = "";
+                    document.getElementById("selectedFileName").innerText = "";
+                    appendFloatingMessage(CURRENT_USER_ID, message || "[Image]");
+                } else {
+                    showFloatingNotification("Error", data.message || "Failed to send message.");
+                }
+            } catch (err) {
+                showFloatingNotification("Error", "Failed to send message.");
+            }
+
+            return false;
+        }
+
+        function appendFloatingMessage(senderId, message) {
+            const chat = document.getElementById("floatingChatContent");
+            const align = senderId === CURRENT_USER_ID ? 'text-end' : 'text-start';
+            const color = align === 'text-end' ? 'bg-primary text-white' : 'bg-white border';
+            const nameTag = align === 'text-end' ? 'You' : 'Other';
+
+            chat.innerHTML += `<div class="${align} mb-2">
+                <div class="d-inline-block px-3 py-2 rounded ${color}">${nameTag}: ${message}</div>
+            </div>`;
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function showFloatingNotification(title, message) {
+            if (!("Toastify" in window)) return;
+            Toastify({
+                text: `${title}: ${message}`,
+                duration: 3500,
+                gravity: "top",
+                position: "right",
+                close: true,
+                backgroundColor: "#007bff",
+                stopOnFocus: true
+            }).showToast();
+        }
+
+        // Display selected file name below input
+        document.getElementById("floatingImageInput").addEventListener("change", function () {
+            const fileNameContainer = document.getElementById("selectedFileName");
+            if (this.files.length > 0) {
+                fileNameContainer.innerText = `Selected file: ${this.files[0].name}`;
+            } else {
+                fileNameContainer.innerText = "";
+            }
+        });
+
+        // Auto-grow textarea height on input
+        document.getElementById("floatingMessageInput").addEventListener("input", function () {
+            this.style.height = "auto";
+            this.style.height = (this.scrollHeight) + "px";
+        });
+
+    </script>
+}

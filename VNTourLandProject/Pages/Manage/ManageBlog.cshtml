@@ -1,0 +1,133 @@
+﻿@page
+@model VNTourLandProject.Pages.Manage.ManageBlogModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Thêm Tour Mới";
+}
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">
+            Our Blog</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item active text-white">Blog</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+<div class="container-fluid py-5">
+    <div class="row">
+        <!-- SIDEBAR -->
+        <div class="col-md-3 mb-4 min-vh-100">
+            <div class="bg-light rounded shadow-sm p-4 sticky-top" style="top: 90px;">
+                <!-- Logo / Brand -->
+                <a href="/" class="text-decoration-none d-flex align-items-center mb-4">
+                    <i class="fa fa-map-marker-alt fa-2x text-primary me-2"></i>
+                    <h4 class="m-0 text-dark fw-bold">Travela</h4>
+                </a>
+
+                <!-- Fast Actions -->
+                <h6 class="fw-bold text-uppercase text-muted mb-3">⚙️ Fast Actions</h6>
+                <div class="list-group mb-3">
+                    <a asp-page="/Manage/ManageTour" class="list-group-item list-group-item-action ">
+                        
+                        🧭 Quản lý Tour
+                    </a>
+                    <a asp-page="/Manage/ManageUser" class="list-group-item list-group-item-action ">
+                        
+                        👤 Quản lý User
+                    </a>
+                    <a asp-page="/Manage/ManageBooking" class="list-group-item list-group-item-action">
+                        
+                        📋 Quản lý Booking
+                    </a>
+                    <a asp-page="/Manage/ManageBlog" class="list-group-item list-group-item-action active">
+                        
+                        💬 Quản lý Blog
+                    </a>
+                    <a asp-page="/Manage/ManageTransaction" class="list-group-item list-group-item-action">
+                        
+                        💳 Giao dịch
+                    </a>
+                </div>
+
+                <!-- User Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary w-100 dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        MANAGER
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="dropdown-item" asp-page="/User/Profile">👤 Profile</a></li>
+                        <li><a class="dropdown-item" asp-page="/Manager/Index">🛠️ Manage</a></li>
+                        <li><a class="dropdown-item" asp-page="/Auth/Logout">🚪 Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <h2 class="fw-bold text-primary mb-4">📝 Quản lý Bài viết Blog</h2>
+
+            <div class="mb-4 text-end">
+                <a asp-page="/Manage/CreateBlog" class="btn btn-success rounded-pill px-4">
+                    <i class="fa fa-plus me-2"></i> Thêm bài viết mới
+                </a>
+            </div>
+
+            <div class="table-responsive shadow-sm rounded">
+                <table class="table table-bordered align-middle table-hover">
+                    <thead class="table-primary text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Hình</th>
+                            <th>Tiêu đề</th>
+                            <th>Ngày đăng</th>
+                            <th>Lượt bình luận</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.AllBlogs != null && Model.AllBlogs.Any())
+                        {
+                            @for (int i = 0; i < Model.AllBlogs.Count; i++)
+                            {
+                                var blog = Model.AllBlogs[i];
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td>
+                                        <img src="@blog.ImageUrl"
+                                             alt="Ảnh blog"
+                                             class="rounded shadow-sm"
+                                             style="width: 80px; height: 60px; object-fit: cover;" />
+                                    </td>
+                                    <td>@blog.Title</td>
+                                    <td>@blog.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@blog.CountComment</td>
+                                    <td class="text-center">
+                                        <a asp-page="/Manage/ManageBlogDetail" asp-route-BlogId="@blog.BlogId" class="btn btn-sm btn-outline-info me-1">View</a>
+
+                                        <a asp-page="/DeleteBlog" asp-route-BlogId="@blog.BlogId" class="btn btn-sm btn-outline-danger">Xoá</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">Không có bài viết nào.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
